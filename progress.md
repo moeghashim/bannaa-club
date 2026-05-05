@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 12:45:52 CDT
+Last updated: 2026-05-05 14:30:26 CDT
 
 ## Project Goal
 
@@ -1600,4 +1600,84 @@ User should confirm whether the Resend SMTP test arrived in the real inbox/spam 
 Temporary bannaa_qa_* browser QA artifacts from this pass are still present so the currently open test article remains inspectable; clean them up after user acceptance.
 Full Arabic coverage remains for deeper authenticated/admin/settings surfaces, email templates, policy/static pages, and mobile acceptance QA.
 Rotate the Resend API key/root password noted earlier because secrets were pasted during setup.
+```
+
+## 2026-05-05 14:30:26 CDT Update
+
+Added Arabic normalization to article search so close Arabic spellings such as `اختبار` and `إختبار` match the same content.
+
+Files changed:
+
+```text
+build/overlays/config/initializers/bannaa_arabic_search.rb
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Implementation notes:
+
+- Added `Bannaa::ArabicSearch` as an overlay initializer.
+- Normalization currently covers Arabic diacritics, tatweel, alef/hamza variants, alef maqsura/Persian yeh, hamza-on-waw/yeh, ta marbuta, and Persian kaf.
+- Kept the existing Forem `pg_search` scope for normal ranking, then added a PostgreSQL fallback match against normalized article fields.
+- No database migration or live-container source edit was used.
+- Bumped the Rails asset version to `1.1-bannaa-20260505-5`.
+
+Local validation:
+
+```text
+bash -n build/scripts/apply-bannaa-overlays.sh
+ruby -c build/overlays/config/initializers/bannaa_arabic_search.rb
+ruby -I. -e '<normalize إختبار / اختبار / إِخْتِبَارـ and assert they match>'
+Fresh Forem clone: build/scripts/apply-bannaa-overlays.sh /tmp/forem-arabic-search-check
+```
+
+GitHub Actions image builds:
+
+```text
+Commit: e67aa90 Normalize Arabic article search
+Run ID: 25396605671
+Result: success in 8m33s
+
+Commit: 3a8ce36 Fix Arabic search fallback subquery
+Run ID: 25397217891
+Result: success in 8m02s
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+VPS deployment:
+
+```text
+cd /docker/forem
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+```
+
+Deployment state:
+
+```text
+forem-postgres-1 remained running.
+forem-redis-1 remained running.
+forem-web-1 recreated with ghcr.io/moeghashim/bannaa-club:production.
+forem-worker-1 recreated with ghcr.io/moeghashim/bannaa-club:production.
+Existing Traefik/OpenClaw stack was not changed.
+Homepage returned HTTP 200 after Rails booted.
+Rails asset version: 1.1-bannaa-20260505-5.
+```
+
+Verification result:
+
+```text
+Rails normalizer maps إِخْتِبَارـ to اختبار.
+Model search found the same temporary article for اختبار, إختبار, and إِخْتِبَارـ.
+Public /search/feed_content returned HTTP 200 and found the same temporary article for اختبار and إختبار.
+Temporary search QA articles created during verification were deleted.
+```
+
+Remaining blockers:
+
+```text
+This pass covers server-side PostgreSQL article search. If Algolia is enabled later for production search, Arabic normalization/synonyms must also be configured there.
+Comment/user/tag search still use their existing upstream matching and may need separate Arabic normalization if users report the same issue outside article search.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
