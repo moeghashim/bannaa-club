@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 14:30:26 CDT
+Last updated: 2026-05-05 16:48:44 CDT
 
 ## Project Goal
 
@@ -1679,5 +1679,107 @@ Remaining blockers:
 ```text
 This pass covers server-side PostgreSQL article search. If Algolia is enabled later for production search, Arabic normalization/synonyms must also be configured there.
 Comment/user/tag search still use their existing upstream matching and may need separate Arabic normalization if users report the same issue outside article search.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 16:44:44 CDT Update
+
+Copied the upstream Bannaa design source locally and updated the Forem brand stylesheet to follow the Bannaa terminal-brutalist color system.
+
+Files changed:
+
+```text
+design/DESIGN.md
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+build/README.md
+progress.md
+```
+
+Implementation notes:
+
+- Copied `https://github.com/moeghashim/bannaa/blob/main/DESIGN.md` to `design/DESIGN.md`.
+- Changed the Forem Bannaa stylesheet from light-only colors to dark-default Bannaa tokens, with the DESIGN.md light palette behind `html[data-theme="light"]`.
+- Mapped the dark lime accent and light orange accent into Forem/Crayons variables, buttons, cards, links, tags, inputs, code blocks, the header, and the top status ribbon.
+- Preserved terminal panels/code blocks as dark surfaces in both themes.
+- Kept the existing historical asset name `bannaa_light.css` so the current layout/manifest hook remains compatible.
+- Bumped the Rails asset version to `1.1-bannaa-20260505-6`.
+
+Remote commands run:
+
+```text
+None.
+```
+
+Deployment state:
+
+```text
+Local overlay changes only. No new image was built or deployed to the VPS in this pass.
+```
+
+Verification result:
+
+```text
+curl -fsSL https://raw.githubusercontent.com/moeghashim/bannaa/main/DESIGN.md | diff -u - design/DESIGN.md
+bash -n build/scripts/apply-bannaa-overlays.sh
+awk '<extract embedded Ruby from apply-bannaa-overlays.sh>' | ruby -c
+node '<check bannaa_light.css brace balance>'
+```
+
+Remaining blockers:
+
+```text
+Build and publish a new Forem image, deploy it on the VPS, then verify https://club.bannaa.ai/ visually in Arabic RTL.
+Confirm the dark-default theme does not conflict with any user-selected Forem theme preference beyond the expected `data-theme="light"` override.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 16:48:44 CDT Update
+
+Adjusted the Bannaa Forem stylesheet after visual review found RTL article actions overflowing the viewport and default Forem buttons still rendering blue.
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Implementation notes:
+
+- Constrained `.crayons-layout` to `min(1440px, 100vw - gutter)` and removed the extra overlay padding that widened Forem's article grid.
+- Added horizontal overflow clipping on the document as a guardrail against fixed/sticky Forem side rails.
+- Added RTL-specific containment for `.crayons-layout__sidebar-left`, `.crayons-article-actions`, `.crayons-article-actions__inner`, and reaction drawer elements.
+- Added stronger Bannaa primary-button overrides for unqualified `.crayons-btn` buttons, `follow-action-button`, and primary/brand CTA variants so Forem's blue defaults do not win.
+- Preserved ghost, outlined, secondary, and icon-only controls as non-primary actions.
+- Bumped the Rails asset version to `1.1-bannaa-20260505-7`.
+
+Remote commands run:
+
+```text
+None yet.
+```
+
+Deployment state:
+
+```text
+Local overlay changes only at this point. New image build/deploy still required before the live website reflects the fix.
+```
+
+Verification result:
+
+```text
+Live article HTML inspected to confirm the relevant classes: crayons-layout__sidebar-left, crayons-article-actions, reaction-drawer, and unqualified crayons-btn buttons.
+bash -n build/scripts/apply-bannaa-overlays.sh
+awk '<extract embedded Ruby from apply-bannaa-overlays.sh>' | ruby -c
+node '<check bannaa_light.css brace balance>'
+```
+
+Remaining blockers:
+
+```text
+Build and publish a new Forem image, deploy it on the VPS, then visually verify the article page and home feed in Arabic RTL.
+Confirm live primary buttons use Bannaa accent colors instead of Forem blue after asset cache/version update.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```

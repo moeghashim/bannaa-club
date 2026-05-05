@@ -23,7 +23,7 @@ Current overlay scope:
 - Arabic language display names.
 - Arabic locale allowlist in `ApplicationController`.
 - Dynamic `<html lang>` and `dir`.
-- RTL helper, RTL stylesheet, and Bannaa light-theme stylesheet.
+- RTL helper, RTL stylesheet, and Bannaa brand-theme stylesheet.
 - Keeps `app/assets/builds` present before Rails boots during image build.
 - Asset manifest links for the Bannaa stylesheets and Forem home feed bundles.
 - Admin default-locale selector support for Arabic.
