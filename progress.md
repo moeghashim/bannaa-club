@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 07:45:11 CDT
+Last updated: 2026-05-05 09:35:41 CDT
 
 ## Project Goal
 
@@ -535,6 +535,53 @@ Remaining blockers:
 
 ```text
 User should log in with the credentials stored locally in deploy/secrets/admin-user.env.
+Root password/API key rotation is still recommended from earlier setup notes.
+```
+
+## 2026-05-05 09:35:41 CDT - First Admin Email Confirmed And SMTP Tested
+
+Files changed:
+
+```text
+progress.md
+```
+
+Issue:
+
+- The first admin account was created through a Rails runner script, not the browser signup flow.
+- The user had `confirmation_sent_at` set, but no confirmation email was actually delivered through the normal Devise flow.
+
+Remote commands run:
+
+```text
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml logs --tail=260 worker web
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml exec -T web bundle exec rails runner "<inspect first admin confirmation state and SMTP settings>"
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml exec -T web bundle exec rails runner "<confirm first admin email>"
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml exec -T web bundle exec rails runner "<send ActionMailer SMTP test email>"
+```
+
+Deployment state:
+
+```text
+No image deployment change.
+First admin email is confirmed.
+SMTP settings resolve to smtp.resend.com:587 with username resend, from no-reply@club.bannaa.ai, authentication plain.
+```
+
+Verification result:
+
+```text
+First admin confirmed?: true.
+ForemInstance.smtp_enabled?: true.
+ActionMailer delivered a test email through Resend without raising an SMTP error.
+```
+
+Remaining blockers:
+
+```text
+User should log in with the first admin credentials stored locally in deploy/secrets/admin-user.env.
+User should check inbox/spam for the "Bannaa email test" message to confirm mailbox receipt.
+If normal user confirmation emails still do not arrive, check Resend activity logs and domain/DKIM/SPF verification for club.bannaa.ai.
 Root password/API key rotation is still recommended from earlier setup notes.
 ```
 
