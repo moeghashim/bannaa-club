@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 22:01:02 CDT
+Last updated: 2026-05-04 22:15:26 CDT
 
 ## Project Goal
 
@@ -653,3 +653,80 @@ manifest links present
 ```
 
 Next step: commit and push the durable asset-path fix, watch the next image build, then pull/recreate the VPS containers from the rebuilt image so the temporary live workaround is no longer needed.
+
+## 2026-05-04 22:15:26 CDT Update
+
+The durable asset-path fix was committed and pushed:
+
+```text
+e5b7d2b Fix Forem build asset path setup
+```
+
+GitHub Actions run:
+
+```text
+Run ID: 25355526314
+Result: success
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+The VPS pulled the rebuilt `production` tag:
+
+```text
+Digest: sha256:6fc2105c4da0841e97fa5f0bd29af117fdea73bf457ee2b3942cd1f457b1199e
+```
+
+Remote commands run:
+
+```text
+docker pull ghcr.io/moeghashim/bannaa-club:production
+docker compose --env-file /opt/forem/config/forem.env up -d --force-recreate web worker
+docker inspect forem-web-1
+```
+
+Clean recreated container verification:
+
+```text
+public/assets manifest contains bannaa_rtl.css
+public/assets manifest contains homePage.js
+public/assets manifest contains homePageFeed.js
+public/assets manifest contains homePageFeedShortcuts.js
+```
+
+Runtime locale was still `en` because Forem stores default locale in the database settings table. Updated it through Rails:
+
+```text
+Settings::UserExperience.default_locale = "ar"
+```
+
+Then restarted web and worker so the setting cache was refreshed.
+
+Final public verification:
+
+```text
+https://club.bannaa.ai/ -> HTTP 200
+https://club.bannaa.ai/robots.txt -> HTTP 200
+Rendered HTML: <html lang="ar" dir="rtl">
+RTL stylesheet present: bannaa_rtl
+Image running on VPS: ghcr.io/moeghashim/bannaa-club:production
+Image digest: sha256:6fc2105c4da0841e97fa5f0bd29af117fdea73bf457ee2b3942cd1f457b1199e
+```
+
+Current deployment state:
+
+- Forem runs next to existing Hostinger Traefik/OpenClaw.
+- No second Traefik was created.
+- Web and worker use the custom GHCR image.
+- The temporary in-container asset workaround has been replaced by a clean recreated container from the rebuilt image.
+
+Remaining work from the original plan:
+
+1. Expand Arabic translation coverage beyond the starter locale files.
+2. Perform Arabic UX acceptance QA: signup, login, article editor, comments, onboarding, admin settings, email templates, and mobile layout.
+3. Verify Resend domain authentication and send a real transactional email test.
+4. Create the first admin/owner account using `FOREM_OWNER_SECRET`.
+5. Rotate the Resend API key because it was pasted into chat earlier.
+6. Remove or rotate the root password stored in local ignored secrets after SSH key access is confirmed stable.
+7. Add automated Postgres backups and a restore drill.
+8. Add basic uptime/log monitoring.
+9. Consider upgrading Hostinger KVM1 before real traffic.
