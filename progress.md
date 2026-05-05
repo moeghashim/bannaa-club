@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 10:23:25 CDT
+Last updated: 2026-05-05 11:47:22 CDT
 
 ## Project Goal
 
@@ -1430,4 +1430,81 @@ Remaining blockers:
 ```text
 The blank onboarding page is fixed.
 The onboarding Preact copy is still upstream English and should be translated in a follow-up overlay pass.
+```
+
+## 2026-05-05 11:47:22 CDT Update
+
+Translated the logged-in onboarding flow and ran the immediate user journey QA.
+
+Files changed:
+
+```text
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Implementation notes:
+
+- Kept all onboarding changes in the overlay patch script rather than editing live containers.
+- Added a reusable `replace_many` helper for grouped upstream string replacements.
+- Translated the visible onboarding Preact screens: profile form, navigation buttons, tag follows, suggested follows, subforem/community follows, email preferences, and optional custom CTA copy.
+- Translated the default `app/views/onboardings/_newsletter.html.erb` fallback content used by the email-preferences onboarding step.
+
+Local validation:
+
+```text
+bash -n build/scripts/apply-bannaa-overlays.sh
+Fresh Forem clone: build/scripts/apply-bannaa-overlays.sh /tmp/forem-onboarding-ar-check
+rg check for old English onboarding copy in app-rendered onboarding component/view files
+```
+
+GitHub Actions image build:
+
+```text
+Commit: fadc269 Translate onboarding flow to Arabic
+Run ID: 25388830606
+Result: success
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+VPS deployment:
+
+```text
+cd /docker/forem
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+```
+
+Deployment state:
+
+```text
+forem-postgres-1 Up
+forem-redis-1 Up
+forem-web-1 Up ghcr.io/moeghashim/bannaa-club:production
+forem-worker-1 Up ghcr.io/moeghashim/bannaa-club:production
+Existing Traefik/OpenClaw stack was not changed.
+```
+
+Live verification:
+
+```text
+Created a temporary confirmed bannaa-qa-* user for browser QA.
+Logged in and reached https://club.bannaa.ai/onboarding?referrer=none.
+Profile onboarding copy rendered in Arabic: أكمل ملفك الشخصي, تعديل صورة الملف الشخصي, الاسم, اسم المستخدم, نبذة, متابعة.
+Completed onboarding through profile, tags, suggested follows, email preferences, and redirect to homepage.
+Created a temporary post from /new through the browser.
+Verified the article page loaded for the temporary post.
+Created a temporary comment under the temporary user via Rails runner after the browser comment editor exposed an unrelated test-user registered_at edge case.
+Verified the comment rendered on the article page.
+Deleted the temporary QA user, article, and comment after verification.
+```
+
+Remaining blockers:
+
+```text
+Onboarding text is now translated.
+The article editor toolbar and article/comment interaction controls still contain English strings such as Edit, Preview, Bold, Submit, Add to the discussion, reaction labels, and moderation controls.
+Full Arabic coverage remains for deeper authenticated areas, admin/settings pages, editor internals, comment form labels, email templates, policy/static pages, and mobile acceptance QA.
+Actual email-confirmation receipt was not re-tested with a real inbox during this pass.
 ```
