@@ -351,6 +351,11 @@ a:not(.crayons-btn):not(.c-cta):hover {
 .crayons-indicator,
 .crayons-navigation__item,
 .crayons-navigation__item a {
+  --tag-bg: transparent !important;
+  --tag-bg-hover: transparent !important;
+  --tag-color: var(--bannaa-muted) !important;
+  --tag-color-hover: var(--bannaa-accent) !important;
+  --tag-prefix: var(--bannaa-accent) !important;
   border: 1px solid var(--bannaa-line-strong);
   border-radius: 999px;
   background: transparent;
@@ -363,7 +368,7 @@ a:not(.crayons-btn):not(.c-cta):hover {
 
 .crayons-tag::before,
 .crayons-tag__prefix {
-  color: var(--bannaa-accent);
+  color: var(--bannaa-accent) !important;
 }
 
 .crayons-tag:hover,

@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 17:37:54 CDT
+Last updated: 2026-05-05 17:48:54 CDT
 
 ## Project Goal
 
@@ -2079,6 +2079,70 @@ Remaining blockers:
 
 ```text
 Commit and push the .crayons-tag__prefix CSS fix, wait for a successful image build, redeploy, then rerun the live no-blue scan.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 17:48:54 CDT Update
+
+Added a stronger tag-color override after the first .crayons-tag__prefix deployment still left one home-page tag prefix blue due to Forem per-tag CSS variables.
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25406187420 --repo moeghashim/bannaa-club --exit-status
+ssh -i ~/.ssh/forem_hostinger_bsocial root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+curl -k -s -o /tmp/bannaa-final-home.html -w '%{http_code}' https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/bannaa_qa_1778001192/khtbr-rhl-bannaa-1778001243-1674
+Headless Chrome DevTools Protocol checks at 1536x900 for article and home pages.
+```
+
+Deployment state:
+
+```text
+Commit 867032f built successfully in GitHub Actions run 25406187420 and was deployed to the VPS.
+forem-web-1 and forem-worker-1 were recreated with ghcr.io/moeghashim/bannaa-club:production.
+forem-postgres-1 and forem-redis-1 remained running.
+Homepage returned HTTP 200 after the recreate.
+Live home/article pages served bannaa_light asset hash 76b6340dd6c88e56a92af28d05ec242b98c4127445a17d092ca29303ec6c6cfa.
+Live article page served Bannaa icon asset hash 1e24facaefbc2cb401ed80ae14afe97524f490fe262ddded24195d7cb8f3bd46.
+```
+
+Verification result:
+
+```text
+Article page at 1536x900:
+- blue computed-style matches: none.
+- visible horizontal overflow: none.
+- primary/follow buttons remain rgb(212, 255, 58) with rgb(10, 10, 10) text.
+- comment form fallback avatar uses the new Bannaa icon asset.
+
+Home page at 1536x900:
+- visible horizontal overflow: none.
+- primary CTA remains rgb(212, 255, 58) with rgb(10, 10, 10) text.
+- one remaining .crayons-tag__prefix was still rgb(59, 73, 223) because its parent tag used Forem inline/per-tag CSS variables.
+- Updated bannaa_light.css to override --tag-bg, --tag-bg-hover, --tag-color, --tag-color-hover, and --tag-prefix with Bannaa values, and to apply !important to .crayons-tag__prefix color.
+- Bumped Rails asset version to 1.1-bannaa-20260505-12.
+
+Validation:
+- bash -n build/scripts/apply-bannaa-overlays.sh passed.
+- embedded Ruby from build/scripts/apply-bannaa-overlays.sh passed ruby -c.
+- fresh upstream Forem overlay check confirmed --tag-prefix override is present and assets.rb uses 1.1-bannaa-20260505-12.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the tag CSS variable fix, wait for a successful image build, redeploy, then rerun the live no-blue scan.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
