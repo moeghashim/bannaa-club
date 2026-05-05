@@ -1,0 +1,22 @@
+[Unit]
+Description=Forem Postgres
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Restart=always
+EnvironmentFile=/opt/forem/config/forem.env
+ExecStartPre=/usr/bin/podman network exists forem || /usr/bin/podman network create forem
+ExecStartPre=-/usr/bin/podman rm -f forem-postgres
+ExecStart=/usr/bin/podman run --name forem-postgres \
+  --replace \
+  --network forem \
+  -e POSTGRES_DB=${POSTGRES_DB} \
+  -e POSTGRES_USER=${POSTGRES_USER} \
+  -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
+  -v /opt/forem/postgres:/var/lib/postgresql/data:Z \
+  docker.io/library/postgres:16
+ExecStop=/usr/bin/podman stop forem-postgres
+
+[Install]
+WantedBy=multi-user.target

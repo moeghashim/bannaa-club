@@ -1,0 +1,52 @@
+name: forem
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    env_file:
+      - /opt/forem/config/forem.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /opt/forem/postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - /opt/forem/redis:/data
+
+  web:
+    image: ${FOREM_IMAGE}
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - /opt/forem/config/forem.env
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.forem.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.forem.entrypoints=websecure
+      - traefik.http.routers.forem.tls.certresolver=letsencrypt
+      - traefik.http.services.forem.loadbalancer.server.port=3000
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - /opt/forem/uploads:/opt/apps/forem/public/uploads
+
+  worker:
+    image: ${FOREM_IMAGE}
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - /opt/forem/config/forem.env
+    command: ["bundle", "exec", "sidekiq"]
+    volumes:
+      - /opt/forem/uploads:/opt/apps/forem/public/uploads

@@ -1,0 +1,15 @@
+[Unit]
+Description=Forem Web
+After=network-online.target forem-postgres.service forem-redis.service
+Wants=network-online.target forem-postgres.service forem-redis.service
+
+[Service]
+Restart=always
+EnvironmentFile=/opt/forem/config/forem.env
+ExecStartPre=/usr/bin/podman network exists forem || /usr/bin/podman network create forem
+ExecStartPre=-/usr/bin/podman rm -f forem-web
+ExecStart=/usr/bin/bash -lc 'exec /usr/bin/podman run --name forem-web --replace --network forem --env-file /opt/forem/config/forem.env -p 127.0.0.1:3000:3000 -v /opt/forem/uploads:/opt/apps/forem/public/uploads:Z "$(cat /opt/forem/version)"'
+ExecStop=/usr/bin/podman stop forem-web
+
+[Install]
+WantedBy=multi-user.target

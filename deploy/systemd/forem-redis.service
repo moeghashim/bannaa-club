@@ -1,0 +1,18 @@
+[Unit]
+Description=Forem Redis
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Restart=always
+ExecStartPre=/usr/bin/podman network exists forem || /usr/bin/podman network create forem
+ExecStartPre=-/usr/bin/podman rm -f forem-redis
+ExecStart=/usr/bin/podman run --name forem-redis \
+  --replace \
+  --network forem \
+  -v /opt/forem/redis:/data:Z \
+  docker.io/library/redis:7 redis-server --appendonly yes
+ExecStop=/usr/bin/podman stop forem-redis
+
+[Install]
+WantedBy=multi-user.target

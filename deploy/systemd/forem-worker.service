@@ -1,0 +1,15 @@
+[Unit]
+Description=Forem Sidekiq Worker
+After=network-online.target forem-postgres.service forem-redis.service
+Wants=network-online.target forem-postgres.service forem-redis.service
+
+[Service]
+Restart=always
+EnvironmentFile=/opt/forem/config/forem.env
+ExecStartPre=/usr/bin/podman network exists forem || /usr/bin/podman network create forem
+ExecStartPre=-/usr/bin/podman rm -f forem-worker
+ExecStart=/usr/bin/bash -lc 'exec /usr/bin/podman run --name forem-worker --replace --network forem --env-file /opt/forem/config/forem.env -v /opt/forem/uploads:/opt/apps/forem/public/uploads:Z "$(cat /opt/forem/version)" bundle exec sidekiq'
+ExecStop=/usr/bin/podman stop forem-worker
+
+[Install]
+WantedBy=multi-user.target

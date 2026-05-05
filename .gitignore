@@ -1,0 +1,20 @@
+# Local production/runtime secrets
+deploy/config/forem.env
+*.env
+!.env.example
+!*.env.example
+
+# Local SSH or secret material
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Local private SSH keys for deployment
+deploy/ssh/*
+!deploy/ssh/*.pub
+
+# Local access secrets
+deploy/secrets/*
+!deploy/secrets/*.example
+!deploy/secrets/README.md

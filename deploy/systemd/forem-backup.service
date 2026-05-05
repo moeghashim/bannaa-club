@@ -1,0 +1,8 @@
+[Unit]
+Description=Forem Postgres Backup
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/forem/config/forem.env
+ExecStart=/opt/forem/scripts/backup-postgres.sh
+
