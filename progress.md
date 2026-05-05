@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 07:03:50 CDT
+Last updated: 2026-05-05 07:07:13 CDT
 
 ## Project Goal
 
@@ -351,6 +351,46 @@ Remaining blockers:
 ```text
 Full Arabic coverage for authenticated flows, admin/settings/editor pages, emails, policy/static pages, and deeper Forem surfaces remains incremental.
 Root password/API key rotation is still recommended from earlier setup notes.
+```
+
+## 2026-05-05 07:07:13 CDT - Arabic Font Correction Prepared
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_rtl.css
+progress.md
+```
+
+Change:
+
+- Updated the RTL overlay to explicitly use `var(--bannaa-body-font)` for Arabic pages, including buttons, inputs, cards, headers, layouts, modals, story titles, article titles, and headings.
+- Kept `pre`, `code`, `kbd`, and `samp` on the monospace font.
+- This follows the Bannaa design source: IBM Plex Sans Arabic is the body/default face and should be used for Arabic text anywhere in the app.
+
+Remote commands run:
+
+```text
+none
+```
+
+Verification result:
+
+```text
+build/scripts/apply-bannaa-overlays.sh applied successfully to a fresh upstream Forem checkout at /tmp/forem-font-overlay-check.
+The generated checkout includes the updated bannaa_rtl.css font-family rules.
+```
+
+Deployment state:
+
+```text
+Local overlay prepared; not deployed yet in this entry.
+```
+
+Remaining blockers:
+
+```text
+Need commit, push, GitHub Actions image build, VPS image pull/recreate, and live font verification.
 ```
 
 Verified:
