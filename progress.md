@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 06:52:11 CDT
+Last updated: 2026-05-05 07:03:50 CDT
 
 ## Project Goal
 
@@ -302,6 +302,55 @@ Remaining blockers:
 ```text
 Need commit, push, GitHub Actions image build, VPS image pull/recreate, and live HTML verification.
 Full Arabic coverage for deeper admin/settings/editor pages remains incremental; current change targets visible public UI strings first.
+```
+
+## 2026-05-05 07:03:50 CDT - Arabic UI Locale Deployment
+
+Files changed:
+
+```text
+progress.md
+```
+
+Related code commit:
+
+```text
+d7c67d97a8bd33182f33c44e2aa80efb645d6447 Add Arabic UI locale overlays
+```
+
+Remote commands run:
+
+```text
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml config --services
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml logs --tail=120 web worker
+curl -I http://127.0.0.1:3000/
+```
+
+Deployment state:
+
+```text
+GitHub Actions Build Forem Image run 25374723471 completed successfully in 8m22s.
+VPS pulled ghcr.io/moeghashim/bannaa-club:production and recreated forem-web-1 and forem-worker-1.
+forem-postgres-1 and forem-redis-1 remained running.
+```
+
+Verification result:
+
+```text
+https://club.bannaa.ai/ returned HTTP 200 after Rails boot completed.
+Live HTML renders <html lang="ar" dir="rtl">.
+Visible unauthenticated homepage text is now Arabic for header/auth/search/feed/footer strings.
+The remaining Latin strings in visible homepage extraction are brand/product names: Bannaa, Forem, DEV, Ruby on Rails.
+```
+
+Remaining blockers:
+
+```text
+Full Arabic coverage for authenticated flows, admin/settings/editor pages, emails, policy/static pages, and deeper Forem surfaces remains incremental.
+Root password/API key rotation is still recommended from earlier setup notes.
 ```
 
 Verified:
