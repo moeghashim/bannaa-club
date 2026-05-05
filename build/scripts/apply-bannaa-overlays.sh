@@ -91,7 +91,7 @@ File.write(manifest, manifest_text)
 
 assets_initializer = File.join(root, "config/initializers/assets.rb")
 assets_text = File.read(assets_initializer)
-bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-2"'
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-3"'
 unless assets_text.include?(bannaa_asset_version)
   assets_text = assets_text.sub(
     /^Rails\.application\.config\.assets\.version = .+$/,
@@ -278,6 +278,22 @@ replace_many(
 )
 
 replace_many(
+  File.join(root, "app/javascript/article-form/components/PageTitle.jsx"),
+  {
+    "{previewLoading ? 'Loading preview' : 'Create Post'}" => "{previewLoading ? 'جارٍ تحميل المعاينة' : 'إنشاء منشور'}",
+    'emptyLabel="Personal"' => 'emptyLabel="شخصي"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Close.jsx"),
+  {
+    'title="Close the editor"' => 'title="إغلاق المحرر"',
+    'aria-label="Close the editor"' => 'aria-label="إغلاق المحرر"',
+  },
+)
+
+replace_many(
   File.join(root, "app/javascript/article-form/components/Toolbar.jsx"),
   {
     'title="Upload Agent Session"' => 'title="رفع جلسة الوكيل"',
@@ -285,6 +301,114 @@ replace_many(
     "\n            Agent Session\n" => "\n            جلسة الوكيل\n",
     'aria-label="Help"' => 'aria-label="مساعدة"',
     'title="Help"' => 'title="مساعدة"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/ArticleCoverImage.jsx"),
+  {
+    "Add Cover Image" => "إضافة صورة غلاف",
+    'aria-label="Close"' => 'aria-label="إغلاق"',
+    "Upload Image" => "رفع صورة",
+    "🍌 Generate Image" => "إنشاء صورة",
+    "`Use a ratio of 1000:${coverImageHeight} `" => "`استخدم نسبة 1000:${coverImageHeight} `",
+    "'Minimum 1000px wide '" => "'الحد الأدنى للعرض 1000 بكسل '",
+    "for best results." => "لأفضل نتيجة.",
+    "Generate Cover Image with Instructions 🍌" => "إنشاء صورة غلاف بتعليمات",
+    "Describe the image you want to generate. Be as specific as you want, or just go with vibes." => "صف الصورة التي تريد إنشاءها. يمكنك أن تكون محددًا قدر ما تريد.",
+    "Image Description" => "وصف الصورة",
+    'placeholder="Example: A futuristic cityscape at sunset with flying cars and neon lights"' => 'placeholder="مثال: مدينة مستقبلية عند الغروب مع أضواء نيون"',
+    "<Spinner /> Generating..." => "<Spinner /> جارٍ الإنشاء...",
+    "'Generate Image'" => "'إنشاء صورة'",
+    "Cancel" => "إلغاء",
+    "Curious how this works? The Forem codebase is" => "هل تريد معرفة كيف يعمل هذا؟ قاعدة Forem البرمجية",
+    "open source 🍌" => "مفتوحة المصدر",
+    "const uploadLabel = mainImage ? 'Change' : 'Upload Cover Image';" => "const uploadLabel = mainImage ? 'تغيير' : 'رفع صورة الغلاف';",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/CoverVideoLink.jsx"),
+  {
+    "Please enter a valid YouTube, Mux, or Twitch video URL." => "أدخل رابط فيديو صالحًا من YouTube أو Mux أو Twitch.",
+    "Add Cover Video Link" => "إضافة رابط فيديو الغلاف",
+    'aria-label="Close"' => 'aria-label="إغلاق"',
+    "Enter a YouTube, Mux, or Twitch video URL to use as the cover video for your article." => "أدخل رابط فيديو من YouTube أو Mux أو Twitch لاستخدامه كفيديو غلاف للمقال.",
+    "Video URL" => "رابط الفيديو",
+    "Supported formats:" => "الصيغ المدعومة:",
+    "*only direct video links, not channel stream" => "*روابط الفيديو المباشرة فقط، وليس بث القناة",
+    "{currentUrl ? 'Update Link' : 'Add Link'}" => "{currentUrl ? 'تحديث الرابط' : 'إضافة الرابط'}",
+    "Cancel" => "إلغاء",
+    "Remove" => "إزالة",
+    "{videoSourceUrl ? 'Change Video Link' : 'Cover Video Link'}" => "{videoSourceUrl ? 'تغيير رابط الفيديو' : 'رابط فيديو الغلاف'}",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/TagsField.jsx"),
+  {
+    "Top tags" => "أبرز الوسوم",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/crayons/MultiSelectAutocomplete/MultiSelectAutocomplete.jsx"),
+  {
+    "`Maximum ${maxSelections} selections`" => "`${maxSelections} اختيارات كحد أقصى`",
+    "<p>Selected items:</p>" => "<p>العناصر المحددة:</p>",
+    "`Only ${maxSelections} ${maxSelections == 1 ? 'selection' : 'selections'} allowed`" => "`${maxSelections} اختيارات مسموحة كحد أقصى`",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/crayons/MultiSelectAutocomplete/TagAutocompleteSelection.jsx"),
+  {
+    "aria-label={`Edit ${name}`}" => "aria-label={`تحرير ${name}`}",
+    "aria-label={`Remove ${name}`}" => "aria-label={`إزالة ${name}`}",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Help/ArticleFormTitle.jsx"),
+  {
+    "Writing a Great Post Title" => "كتابة عنوان منشور جيد",
+    "Think of your post title as a super short (but compelling!) description\n        — like an overview of the actual post in one short sentence." => "تعامل مع عنوان المنشور كوصف قصير وجذاب يلخص فكرة المنشور في جملة واحدة.",
+    "Use keywords where appropriate to help ensure people can find your post\n        by search." => "استخدم الكلمات المفتاحية المناسبة حتى يسهل العثور على منشورك في البحث.",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Help/TagInput.jsx"),
+  {
+    "Tagging Guidelines" => "إرشادات الوسوم",
+    "Tags help people find your post - think of them as the topics or\n        categories that best describe your post." => "تساعد الوسوم الناس على العثور على منشورك، وهي الموضوعات أو التصنيفات التي تصف المنشور.",
+    "Add up to four comma-separated tags per post. Use existing tags whenever\n        possible." => "أضف حتى أربعة وسوم لكل منشور. استخدم الوسوم الموجودة كلما أمكن.",
+    "Some tags have special posting guidelines - double check to make sure\n        your post complies with them." => "لبعض الوسوم إرشادات نشر خاصة، تحقق من توافق منشورك معها.",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Help/ArticleTips.jsx"),
+  {
+    "Publishing Tips" => "نصائح النشر",
+    "Ensure your post has a cover image set to make the most of the home feed\n        and social media platforms." => "أضف صورة غلاف للمنشور ليظهر بشكل أفضل في الخلاصة ومنصات التواصل.",
+    "Share your post on social media platforms or with your co-workers or\n        local communities." => "شارك منشورك على منصات التواصل أو مع زملائك أو مجتمعاتك المحلية.",
+    "Ask people to leave questions for you in the comments. It's a great way\n        to spark additional discussion describing personally why you wrote it or\n        why people might find it helpful." => "اطلب من الناس ترك أسئلتهم في التعليقات لفتح نقاش إضافي حول سبب كتابتك للمنشور وفائدته.",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Help/EditorFormattingHelp.jsx"),
+  {
+    "Editor Basics" => "أساسيات المحرر",
+    "to write and format posts." => "لكتابة المنشورات وتنسيقها.",
+    "Commonly used syntax" => "صيغ شائعة الاستخدام",
+    "Embed rich content such as Tweets, YouTube videos, etc. Use the complete\n        URL:" => "ضمّن محتوى غنيًا مثل التغريدات أو فيديوهات YouTube وغيرها. استخدم الرابط الكامل:",
+    "See a list of supported embeds" => "عرض قائمة التضمينات المدعومة",
+    "In addition to images for the post's content, you can also drag and drop\n        a cover image." => "بالإضافة إلى صور محتوى المنشور، يمكنك سحب وإفلات صورة غلاف.",
+    "Embed coding agent sessions from Claude Code, Codex, Gemini CLI, and\n        more:" => "ضمّن جلسات وكلاء البرمجة من Claude Code وCodex وGemini CLI وغيرها:",
+    "different parts throughout your post:" => "أجزاء مختلفة داخل منشورك:",
+    "Upload a session" => "رفع جلسة",
   },
 )
 
@@ -392,6 +516,22 @@ replace_many(
     "Series name" => "اسم السلسلة",
     'placeholder="Enter series name..."' => 'placeholder="أدخل اسم السلسلة..."',
     "Create series" => "إنشاء السلسلة",
+    "Cancel" => "إلغاء",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/SeriesSelector.jsx"),
+  {
+    "Select an existing series" => "اختر سلسلة موجودة",
+    "Create new series" => "إنشاء سلسلة جديدة",
+    "Give your series a unique name. The series will be visible once it has multiple posts." => "اختر اسمًا فريدًا للسلسلة. ستظهر السلسلة عندما تحتوي على أكثر من منشور.",
+    "<strong>Currently selected:</strong>" => "<strong>المحدد حاليًا:</strong>",
+    "Remove series" => "إزالة السلسلة",
+    "Create a new series" => "إنشاء سلسلة جديدة",
+    "Series name" => "اسم السلسلة",
+    'placeholder="Enter series name..."' => 'placeholder="أدخل اسم السلسلة..."',
+    "{isCreating ? 'Creating...' : 'Create series'}" => "{isCreating ? 'جارٍ الإنشاء...' : 'إنشاء السلسلة'}",
     "Cancel" => "إلغاء",
   },
 )
