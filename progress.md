@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 09:35:41 CDT
+Last updated: 2026-05-05 10:08:34 CDT
 
 ## Project Goal
 
@@ -1297,4 +1297,75 @@ Remaining blockers:
 
 ```text
 None for the requested confirm-email and sign-in translation pass.
+```
+
+## 2026-05-05 10:08:34 CDT Update
+
+Fixed the blank logged-in onboarding page at:
+
+```text
+https://club.bannaa.ai/onboarding?referrer=none
+```
+
+Root cause:
+
+```text
+The live Rails containers did not have RAILS_SERVE_STATIC_FILES enabled.
+Rails was trying to compile fingerprinted assets at runtime instead of serving the precompiled files from the production image.
+Because the production image does not keep node_modules, /assets/base-...js returned a JavaScript Sprockets::FileNotFound error for @honeybadger-io/js.
+That prevented the Forem base boot scripts from populating body[data-user] and the CSRF meta data that onboarding waits for.
+```
+
+Files changed:
+
+```text
+deploy/config/forem.env.example
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+Updated /opt/forem/config/forem.env to include RAILS_SERVE_STATIC_FILES=true without printing secrets.
+cd /docker/forem
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+docker compose --env-file /opt/forem/config/forem.env ps
+docker exec forem-web-1 bundle exec rails runner 'User.where("email LIKE ?", "bannaa-onboarding-debug-%@example.com").find_each(&:destroy!)'
+```
+
+Repository hardening:
+
+```text
+deploy/config/forem.env.example now includes RAILS_SERVE_STATIC_FILES=true.
+build/scripts/apply-bannaa-overlays.sh now sets Rails.application.config.assets.version = "1.1-bannaa-20260505".
+The asset-version bump is intentional so the next custom image emits new fingerprinted asset URLs and avoids any browser cache that may have seen the temporary broken base.js response.
+```
+
+Deployment state after env fix:
+
+```text
+forem-postgres-1 Up
+forem-redis-1 Up
+forem-web-1 Up ghcr.io/moeghashim/bannaa-club:production
+forem-worker-1 Up ghcr.io/moeghashim/bannaa-club:production
+Existing Traefik/OpenClaw stack was not changed.
+```
+
+Verification result:
+
+```text
+https://club.bannaa.ai/assets/base-2bacbe8dfc080954166fffeed29d0d2b987bc0a147671dd6b82118493429c5fa.js -> HTTP 200
+Downloaded asset size: 154909 bytes
+Sprockets::FileNotFound no longer appears in the asset body
+Honeybadger.configure / InstantClick boot symbols are present
+Logged-in browser automation found body[data-user], CSRF meta data, and data-testid="onboarding-profile-form"
+Temporary debug login user was deleted after verification
+```
+
+Remaining blockers:
+
+```text
+Users who loaded the page during the bad asset state may need a hard refresh until the rebuilt image with the bumped asset version is deployed.
+The onboarding Preact copy is still upstream English and should be translated in a follow-up overlay pass.
 ```

@@ -79,6 +79,17 @@ manifest_text = File.read(manifest)
 end
 File.write(manifest, manifest_text)
 
+assets_initializer = File.join(root, "config/initializers/assets.rb")
+assets_text = File.read(assets_initializer)
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505"'
+unless assets_text.include?(bannaa_asset_version)
+  assets_text = assets_text.sub(
+    /^Rails\.application\.config\.assets\.version = .+$/,
+    bannaa_asset_version,
+  )
+  File.write(assets_initializer, assets_text)
+end
+
 admin_locale_form = File.join(root, "app/views/admin/settings/forms/_user_experience.html.erb")
 if File.exist?(admin_locale_form)
   text = File.read(admin_locale_form)
