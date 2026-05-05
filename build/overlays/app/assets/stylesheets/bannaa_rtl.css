@@ -1,0 +1,33 @@
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+html[dir="rtl"] body {
+  text-align: start;
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  direction: rtl;
+  text-align: start;
+}
+
+html[dir="rtl"] pre,
+html[dir="rtl"] code,
+html[dir="rtl"] kbd,
+html[dir="rtl"] samp {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir="rtl"] .crayons-article__body {
+  direction: rtl;
+  text-align: start;
+}
+
+html[dir="rtl"] .crayons-article__body pre,
+html[dir="rtl"] .crayons-article__body code {
+  direction: ltr;
+}
+

@@ -1,0 +1,10 @@
+---
+ar:
+  views:
+    pagination:
+      first: "&laquo; الأولى"
+      last: "الأخيرة &raquo;"
+      previous: "&lsaquo; السابقة"
+      next: "التالية &rsaquo;"
+      truncate: "&hellip;"
+

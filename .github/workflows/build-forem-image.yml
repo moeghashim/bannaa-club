@@ -1,0 +1,60 @@
+name: Build Forem Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build-forem-image.yml"
+      - "build/**"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  FOREM_REPO: https://github.com/forem/forem.git
+  FOREM_REF: main
+  IMAGE_NAME: ghcr.io/moeghashim/bannaa-club
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Bannaa overlay
+        uses: actions/checkout@v4
+
+      - name: Checkout upstream Forem
+        run: |
+          git clone --depth 1 --branch "${FOREM_REF}" "${FOREM_REPO}" forem-src
+          git -C forem-src rev-parse HEAD > forem-src/FOREM_UPSTREAM_SHA
+
+      - name: Apply Bannaa overlays
+        run: ./build/scripts/apply-bannaa-overlays.sh forem-src
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push production image
+        uses: docker/build-push-action@v6
+        with:
+          context: forem-src
+          file: forem-src/Containerfile
+          target: production
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:production
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          build-args: |
+            VCS_REF=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+

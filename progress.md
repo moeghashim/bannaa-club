@@ -435,3 +435,56 @@ deploy/secrets/ssh-access.env
 ```
 
 The repository now contains `AGENTS.md`, which instructs future agents to read this `progress.md` file before making changes.
+
+## 2026-05-04 21:24:53 CDT Update
+
+Added the first custom image build path for Bannaa Club.
+
+New files:
+
+```text
+.github/workflows/build-forem-image.yml
+build/README.md
+build/scripts/apply-bannaa-overlays.sh
+build/overlays/config/locales/ar.yml
+build/overlays/config/locales/devise.ar.yml
+build/overlays/config/locales/kaminari.ar.yml
+build/overlays/config/locales/languages/ar.yml
+build/overlays/config/initializers/bannaa_arabic_i18n.rb
+build/overlays/app/assets/stylesheets/bannaa_rtl.css
+```
+
+Build strategy:
+
+- Keep this repo as a small overlay/deployment repo.
+- GitHub Actions clones upstream `forem/forem` at build time.
+- The overlay script copies Arabic files and patches small integration points.
+- Docker builds Forem's upstream `production` target.
+- Published target remains:
+
+  ```text
+  ghcr.io/moeghashim/bannaa-club:production
+  ```
+
+Arabic overlay scope:
+
+- Initial Arabic locale file.
+- Arabic Devise starter translations.
+- Arabic Kaminari pagination translations.
+- Arabic language display names.
+- Adds `ar` to Forem's locale route allowlist.
+- Makes `<html>` use dynamic `lang` and `dir`.
+- Adds `rtl_locale?` helper.
+- Adds RTL CSS.
+- Adds Arabic to the admin default-locale selector.
+- Adds required production asset manifest links.
+
+Local validation performed:
+
+```text
+build/scripts/apply-bannaa-overlays.sh /tmp/forem-overlay-test
+YAML parse for config/locales/**/*.yml
+ruby -c app/helpers/application_helper.rb
+```
+
+Next step: push this workflow and run GitHub Actions to build/publish `ghcr.io/moeghashim/bannaa-club:production`.

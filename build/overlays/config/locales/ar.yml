@@ -1,0 +1,112 @@
+---
+ar:
+  div: div
+  span: span
+  img: img
+  contact_prompts:
+    if_any_questions_html: <a href="/contact">تواصل معنا</a> إذا كانت لديك أي أسئلة.
+    if_continued_trouble_html: <a href="/contact">تواصل معنا</a> إذا استمرت المشكلة.
+    if_we_can_help_html: <a href="/contact">تواصل معنا</a> إذا كان بإمكاننا مساعدتك.
+  core:
+    add_comment: أضف تعليقًا
+    beta: تجريبي
+    comment: تعليق
+    copy_link: نسخ الرابط
+    edit_profile: تعديل الملف الشخصي
+    follow: متابعة
+    follow_back: متابعة بالمثل
+    following: تتابع
+    like: إعجاب
+    loading: جار التحميل...
+    reaction: تفاعل
+    report_abuse: الإبلاغ عن إساءة
+    search: بحث
+    success_settings: تم تحديث الإعدادات بنجاح.
+    search_placeholder: بحث...
+    search_find_related_posts: ابحث عن منشورات ذات صلة...
+    search_powered_by: مدعوم بواسطة Algolia
+    search_submit_search: إرسال البحث للتصفية المتقدمة.
+    search_displaying_recommendations: عرض توصيات Algolia - ابدأ الكتابة للبحث
+    article_form_save_changes: حفظ التغييرات
+    article_form_schedule: جدولة
+    article_form_publish: نشر
+    article_form_loading_preview: جار تحميل المعاينة
+    article_form_preview_loaded: تم تحميل المعاينة
+    article_form_co_authors: مؤلفون مشاركون
+    article_form_co_authors_description: أضف حتى 4 مؤلفين مشاركين من %{org_name}.
+    article_form_co_authors_placeholder: أضف حتى 4...
+    comments_preview: معاينة
+    comments_continue_editing: متابعة التحرير
+    survey_enter_response: اكتب ردك هنا...
+    survey_thank_you_response: شكرًا لردك.
+    survey_thank_you_completing: شكرًا لإكمال الاستبيان!
+    dashboard_analytics_readers: القراء
+    dashboard_analytics_avg_read_time: متوسط وقت القراءة %{seconds}ث
+    dashboard_analytics_comments: التعليقات
+    dashboard_analytics_reactions: التفاعلات
+    dashboard_analytics_unique_reactors: من %{count} مستخدمين فريدين
+    dashboard_analytics_bookmarks: المحفوظات
+    dashboard_analytics_followers: متابعون جدد
+    top_contributors_empty: لا توجد تفاعلات في هذه الفترة.
+    top_contributors_reactions: تفاعلات
+    top_contributors_comments: تعليقات
+    top_contributors_weight_note: التعليقات لها وزن أكبر
+    follower_engagement_ratio: "%{ratio}% من المتابعين تفاعلوا"
+    follower_engagement_detail: "(%{engaged} من %{total})"
+    dashboard_analytics_no_data: لا توجد بيانات لهذه الفترة
+    dashboard_analytics_no_referrers: لا توجد مصادر زيارات بعد
+    stats_by: بواسطة
+    editor_new_title: عنوان المنشور الجديد هنا...
+    editor_body_placeholder: اكتب محتوى منشورك هنا...
+    tags_field_label: أضف حتى 4 وسوم
+    tags_field_placeholder: أضف حتى 4 وسوم...
+    counted_organization:
+      one: "%{count} منظمة"
+      other: "%{count} منظمات"
+    counted_user:
+      one: "%{count} شخص"
+      other: "%{count} أشخاص"
+    not_following: أنت لا تتابع أحدًا
+    following_everyone: "أنت تتابع %{details} (الجميع)"
+    you_are_following: أنت تتابع
+    and: و
+  datetime:
+    distance_in_words_ago:
+      about_x_hours:
+        one: قبل نحو ساعة
+        other: قبل نحو %{count} ساعات
+      about_x_months:
+        one: قبل نحو شهر
+        other: قبل نحو %{count} أشهر
+      about_x_years:
+        one: قبل نحو سنة
+        other: قبل نحو %{count} سنوات
+      almost_x_years:
+        one: قبل سنة تقريبًا
+        other: قبل %{count} سنوات تقريبًا
+      half_a_minute: قبل نصف دقيقة
+      less_than_x_seconds:
+        one: قبل أقل من ثانية
+        other: قبل أقل من %{count} ثوان
+      less_than_x_minutes:
+        one: قبل أقل من دقيقة
+        other: قبل أقل من %{count} دقائق
+      over_x_years:
+        one: قبل أكثر من سنة
+        other: قبل أكثر من %{count} سنوات
+      x_seconds:
+        one: قبل ثانية واحدة
+        other: قبل %{count} ثوان
+      x_minutes:
+        one: قبل دقيقة واحدة
+        other: قبل %{count} دقائق
+      x_days:
+        one: قبل يوم واحد
+        other: قبل %{count} أيام
+      x_months:
+        one: قبل شهر واحد
+        other: قبل %{count} أشهر
+      x_years:
+        one: قبل سنة واحدة
+        other: قبل %{count} سنوات
+
