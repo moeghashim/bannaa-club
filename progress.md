@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 18:05:01 CDT
+Last updated: 2026-05-05 18:15:25 CDT
 
 ## Project Goal
 
@@ -2244,6 +2244,60 @@ Remaining blockers:
 
 ```text
 Commit and push the header/logo overlay, wait for a successful image build, deploy to the VPS, then verify live header logo text and top-bar colors.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 18:15:25 CDT Update
+
+Deployed and verified the header logo and top-area color fix.
+
+Files changed:
+
+```text
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25407143877 --repo moeghashim/bannaa-club --exit-status
+ssh -i ~/.ssh/forem_hostinger_bsocial root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+curl -k -s -o /tmp/bannaa-header-home.html -w '%{http_code}' https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/
+Headless Chrome DevTools Protocol check at 1536x900 for the home page header.
+```
+
+Deployment state:
+
+```text
+Commit 13128b6 built successfully in GitHub Actions run 25407143877 and was deployed to the VPS.
+forem-web-1 and forem-worker-1 were recreated with ghcr.io/moeghashim/bannaa-club:production.
+forem-postgres-1 and forem-redis-1 remained running.
+Homepage returned HTTP 200 after Rails booted.
+Live home page served bannaa_light asset hash e621f3fedd17a20eedda2df1d38e602082c8ae61ecd098aef3dfd087b88b91cd.
+```
+
+Verification result:
+
+```text
+Live HTML:
+- header .site-logo renders بنّاء.
+- header .site-logo aria-label is الرئيسية - بنّاء.
+
+Browser computed styles at 1536x900:
+- header background: rgb(17, 17, 17).
+- header border bottom: rgb(36, 36, 36).
+- header blue computed-style matches: none.
+- header CTA focus state: rgb(212, 255, 58) background, rgb(212, 255, 58) border, rgb(10, 10, 10) text.
+- logo text: بنّاء.
+- visible horizontal overflow: none.
+```
+
+Remaining blockers:
+
+```text
+The reported top-area blue issue and English logo issue are verified fixed on the live site.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
