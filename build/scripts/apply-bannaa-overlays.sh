@@ -131,7 +131,7 @@ replace_once(
     if Bannaa::ArabicSearch.arabic?(term) && normalized_term.present?
       pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_term)}%"
       where(
-        "#{table_name}.id IN (#{pg_search_relation.select("#{table_name}.id").to_sql}) OR #{Bannaa::ArabicSearch.article_match_sql}",
+        "#{table_name}.id IN (#{pg_search_relation.unscope(:select).select("#{table_name}.id").to_sql}) OR #{Bannaa::ArabicSearch.article_match_sql}",
         bannaa_arabic_search_pattern: pattern,
       )
     else
