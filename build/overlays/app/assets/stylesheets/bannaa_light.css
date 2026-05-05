@@ -1,0 +1,290 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Rubik:wght@800;900&display=swap");
+
+:root {
+  --bannaa-bg: #ffffff;
+  --bannaa-surface: #f6f6f4;
+  --bannaa-recessed: #eeece6;
+  --bannaa-line: #e6e4dc;
+  --bannaa-line-strong: #c9c6bb;
+  --bannaa-text: #0e0e0c;
+  --bannaa-muted: #4a4740;
+  --bannaa-subtle: #8a8677;
+  --bannaa-accent: #ff6a3d;
+  --bannaa-accent-ink: #ffffff;
+  --bannaa-warning: #c94a1f;
+  --bannaa-ok: #2f6d2d;
+  --bannaa-display-font: "Rubik", "IBM Plex Sans Arabic", sans-serif;
+  --bannaa-body-font: "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bannaa-mono-font: "JetBrains Mono", "SF Mono", Consolas, monospace;
+
+  --site-width: 1440px;
+  --radius: 2px;
+  --radius-large: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --ff-sans-serif: var(--bannaa-body-font);
+  --ff-monospace: var(--bannaa-mono-font);
+
+  --base: var(--bannaa-text);
+  --base-inverted: var(--bannaa-bg);
+  --base-100: var(--bannaa-text);
+  --base-90: #1b1a17;
+  --base-80: #2a2924;
+  --base-70: #3a3832;
+  --base-60: var(--bannaa-muted);
+  --base-50: #686458;
+  --base-40: var(--bannaa-subtle);
+  --base-30: #aaa69a;
+  --base-20: var(--bannaa-line-strong);
+  --base-10: var(--bannaa-line);
+  --base-0: var(--bannaa-bg);
+
+  --accent-brand-lighter-rgb: 255, 126, 81;
+  --accent-brand-rgb: 255, 106, 61;
+  --accent-brand-darker-rgb: 201, 74, 31;
+  --accent-brand-lighter: rgb(var(--accent-brand-lighter-rgb));
+  --accent-brand: rgb(var(--accent-brand-rgb));
+  --accent-brand-darker: rgb(var(--accent-brand-darker-rgb));
+  --accent-warning: var(--bannaa-warning);
+  --accent-success: var(--bannaa-ok);
+
+  --body-bg: var(--bannaa-bg);
+  --body-color: var(--bannaa-text);
+  --body-color-inverted: var(--bannaa-accent-ink);
+  --card-bg: var(--bannaa-surface);
+  --card-color: var(--bannaa-text);
+  --card-color-secondary: var(--bannaa-muted);
+  --card-color-tertiary: var(--bannaa-subtle);
+  --card-secondary-bg: var(--bannaa-recessed);
+  --card-tertiary-bg: var(--bannaa-recessed);
+  --card-tertiary-bg-hover: #e4e1d8;
+  --card-secondary-color: var(--bannaa-muted);
+  --card-border: var(--bannaa-line);
+  --card-secondary-border: var(--bannaa-line);
+  --header-bg: rgba(255, 255, 255, 0.94);
+  --header-shadow: transparent;
+  --footer-bg: var(--bannaa-surface);
+  --footer-color: var(--bannaa-muted);
+  --form-bg: transparent;
+  --form-bg-focus: transparent;
+  --form-border: var(--bannaa-line-strong);
+  --form-border-hover: var(--bannaa-text);
+  --form-border-focus: var(--bannaa-accent);
+  --form-placeholder-color: var(--bannaa-subtle);
+  --link-branded-color: var(--bannaa-accent);
+  --link-branded-color-hover: var(--bannaa-warning);
+  --button-primary-bg: var(--bannaa-accent);
+  --button-primary-bg-hover: #ff7e51;
+  --button-primary-color: var(--bannaa-accent-ink);
+  --button-primary-color-hover: var(--bannaa-accent-ink);
+  --btn-primary-bg: var(--bannaa-accent);
+  --btn-primary-bg-hover: #ff7e51;
+  --btn-primary-color: var(--bannaa-accent-ink);
+  --btn-primary-color-hover: var(--bannaa-accent-ink);
+  --button-outlined-border: var(--bannaa-line-strong);
+  --button-outlined-border-hover: var(--bannaa-text);
+  --cta-branded-bg: var(--bannaa-accent);
+  --cta-branded-bg-hover: #ff7e51;
+  --cta-branded-color: var(--bannaa-accent-ink);
+  --cta-branded-color-hover: var(--bannaa-accent-ink);
+  --cta-branded-border: var(--bannaa-accent);
+  --cta-branded-border-hover: #ff7e51;
+  --focus: var(--bannaa-accent);
+  --divider: var(--bannaa-line);
+  --shadow-1: none;
+  --shadow-2: none;
+  --shadow-smooth: none;
+}
+
+body {
+  background: var(--bannaa-bg);
+  color: var(--bannaa-text);
+  font-family: var(--bannaa-body-font);
+}
+
+body::before {
+  content: "BANNAA CLUB // AR-FIRST // LIGHT";
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 101;
+  display: block;
+  padding: 6px 24px;
+  border-block-end: 1px solid var(--bannaa-line);
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--bannaa-subtle);
+  font-family: var(--bannaa-mono-font);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.crayons-header {
+  inset-block-start: 23px;
+  border-block-end: 1px solid var(--bannaa-line);
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+}
+
+.crayons-header__container,
+.crayons-layout {
+  max-width: var(--site-width);
+}
+
+.crayons-card,
+.crayons-story,
+.crayons-article,
+.sidebar-navigation-links a,
+.crayons-notice,
+.crayons-dropdown,
+.crayons-modal__box {
+  border-color: var(--bannaa-line);
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+.crayons-card,
+.crayons-story,
+.crayons-article,
+.crayons-dropdown,
+.crayons-modal__box {
+  background: var(--bannaa-surface);
+}
+
+.crayons-card:hover,
+.crayons-story:hover {
+  border-color: var(--bannaa-line-strong);
+  transform: none;
+}
+
+.crayons-card,
+.crayons-story {
+  position: relative;
+}
+
+.crayons-card::after,
+.crayons-story::after {
+  content: "";
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-end: -1px;
+  width: 14px;
+  height: 14px;
+  border-block-start: 2px solid var(--bannaa-accent);
+  border-inline-end: 2px solid var(--bannaa-accent);
+  pointer-events: none;
+}
+
+.crayons-btn,
+.c-cta,
+.crayons-btn--ghost-brand,
+.crayons-btn--outlined,
+.crayons-textfield,
+.crayons-textfield--ghost,
+input,
+textarea,
+select {
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+.crayons-btn,
+.c-cta {
+  font-weight: 600;
+}
+
+.crayons-btn--brand,
+.crayons-btn--primary,
+.c-cta--branded {
+  border-color: var(--bannaa-accent);
+  background: var(--bannaa-accent);
+  color: var(--bannaa-accent-ink);
+}
+
+.crayons-btn--brand:hover,
+.crayons-btn--primary:hover,
+.c-cta--branded:hover {
+  border-color: #ff7e51;
+  background: #ff7e51;
+  color: var(--bannaa-accent-ink);
+  box-shadow: 0 0 0 4px rgba(255, 106, 61, 0.2);
+}
+
+.crayons-textfield,
+input,
+textarea,
+select {
+  border: 1px solid var(--bannaa-line-strong);
+  background: transparent;
+}
+
+.crayons-textfield:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--bannaa-accent);
+}
+
+a:not(.crayons-btn):not(.c-cta) {
+  color: var(--bannaa-text);
+}
+
+a:not(.crayons-btn):not(.c-cta):hover {
+  color: var(--bannaa-accent);
+}
+
+.crayons-tag,
+.crayons-indicator {
+  border: 1px solid var(--bannaa-line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bannaa-muted);
+  font-family: var(--bannaa-mono-font);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.crayons-tag::before {
+  color: var(--bannaa-accent);
+}
+
+.crayons-subtitle-1,
+.crayons-title,
+.crayons-story__title,
+.crayons-article__header__meta h1 {
+  color: var(--bannaa-text);
+  font-family: var(--bannaa-display-font);
+  letter-spacing: 0;
+}
+
+.crayons-story__tertiary,
+.crayons-link--secondary,
+.color-base-60,
+.sidebar-footer {
+  color: var(--bannaa-subtle);
+}
+
+pre,
+code,
+kbd,
+samp,
+.ff-monospace {
+  font-family: var(--bannaa-mono-font);
+}
+
+html[dir="rtl"] pre,
+html[dir="rtl"] code,
+html[dir="rtl"] kbd,
+html[dir="rtl"] samp {
+  font-family: var(--bannaa-mono-font);
+}
+
+html[dir="rtl"] .crayons-tag,
+html[dir="rtl"] .crayons-indicator,
+html[dir="rtl"] [class*="mono"] {
+  font-family: var(--bannaa-body-font);
+  letter-spacing: 0;
+  text-transform: none;
+}

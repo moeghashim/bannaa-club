@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 22:17:09 CDT
+Last updated: 2026-05-04 22:21:19 CDT
 
 ## Project Goal
 
@@ -761,3 +761,54 @@ Live image: ghcr.io/moeghashim/bannaa-club:production
 ```
 
 Remaining design-specific work: implement a Forem brand-theme overlay using the Bannaa design tokens. The current live deployment has Arabic/RTL support, but not the full terminal-brutalist visual theme yet.
+
+## 2026-05-04 22:21:19 CDT Update
+
+User requested the Bannaa light theme.
+
+Prepared a Forem overlay implementation that keeps the change update-safe:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+build/README.md
+progress.md
+```
+
+Light theme overlay scope:
+
+- Uses Bannaa light palette: white canvas, bone/linen surfaces, carbon text, industrial orange accent.
+- Overrides Forem/Crayons color variables where possible instead of broad template edits.
+- Keeps 2px radii for buttons/cards/forms.
+- Removes shadows/lift from major surfaces.
+- Adds compact operator status ribbon.
+- Uses IBM Plex Sans Arabic for body/Arabic text, Rubik for display roles, and JetBrains Mono for technical metadata.
+- Keeps RTL-specific behavior in `bannaa_rtl.css`.
+
+Overlay integration:
+
+```text
+app/views/layouts/application.html.erb links bannaa_light.css for all locales
+app/views/layouts/application.html.erb links bannaa_rtl.css only for RTL locales
+app/assets/config/manifest.js links bannaa_light.css and bannaa_rtl.css
+```
+
+Local validation against fresh upstream Forem checkout:
+
+```text
+build/scripts/apply-bannaa-overlays.sh /tmp/forem-overlay-test-light
+YAML parse for config/locales/**/*.yml
+ruby -c app/helpers/application_helper.rb
+layout check for bannaa_light/bannaa_rtl stylesheet links
+manifest check for bannaa_light/bannaa_rtl asset links
+```
+
+Result:
+
+```text
+YAML OK
+Syntax OK
+styles OK
+```
+
+Next step: commit and push, wait for GitHub Actions image build, deploy the rebuilt image to the VPS, and verify `https://club.bannaa.ai/` still renders `lang="ar" dir="rtl"` with `bannaa_light` and `bannaa_rtl` assets.

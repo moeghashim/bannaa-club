@@ -49,10 +49,19 @@ replace_once(
 )
 
 layout_text = File.read(layout)
-unless layout_text.include?('bannaa_rtl')
+unless layout_text.include?('bannaa_light')
   layout_text = layout_text.sub(
     '<%= render "layouts/styles", qualifier: "main" %>',
-    %(<%= render "layouts/styles", qualifier: "main" %>\n      <%= stylesheet_link_tag "bannaa_rtl", media: "all" if rtl_locale? %>)
+    %(<%= render "layouts/styles", qualifier: "main" %>\n      <%= stylesheet_link_tag "bannaa_light", media: "all" %>)
+  )
+  File.write(layout, layout_text)
+end
+
+layout_text = File.read(layout)
+unless layout_text.include?('bannaa_rtl')
+  layout_text = layout_text.sub(
+    '<%= stylesheet_link_tag "bannaa_light", media: "all" %>',
+    %(<%= stylesheet_link_tag "bannaa_light", media: "all" %>\n      <%= stylesheet_link_tag "bannaa_rtl", media: "all" if rtl_locale? %>)
   )
   File.write(layout, layout_text)
 end
@@ -60,6 +69,7 @@ end
 manifest = File.join(root, "app/assets/config/manifest.js")
 manifest_text = File.read(manifest)
 [
+  "//= link bannaa_light.css",
   "//= link bannaa_rtl.css",
   "//= link homePage.js",
   "//= link homePageFeed.js",
