@@ -412,3 +412,26 @@ FOREM_IMAGE=ghcr.io/moeghashim/bannaa-club:production
 ```
 
 This repo is intended to hold the deployment scaffold and, next, the custom Arabic-enabled Forem image build path. The live VPS still runs the temporary upstream image until the custom image exists and is deployed.
+
+## 2026-05-04 21:20:12 CDT Update
+
+Initialized the local workspace as a git repository and pushed the deployment scaffold to:
+
+```text
+https://github.com/moeghashim/bannaa-club
+```
+
+Commit pushed:
+
+```text
+3f99e1f Add Forem Hostinger deployment scaffold
+```
+
+Before committing, staged content was scanned for obvious secret values. The real local secret files remained ignored:
+
+```text
+deploy/config/forem.env
+deploy/secrets/ssh-access.env
+```
+
+The repository now contains `AGENTS.md`, which instructs future agents to read this `progress.md` file before making changes.
