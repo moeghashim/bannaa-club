@@ -1,28 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Rubik:wght@800;900&display=swap");
 
 :root,
-html:not([data-theme="light"]) {
-  color-scheme: dark;
-
-  --bannaa-bg: #0a0a0a;
-  --bannaa-surface: #111111;
-  --bannaa-recessed: #161616;
-  --bannaa-line: #242424;
-  --bannaa-line-strong: #2e2e2e;
-  --bannaa-text: #f2f2ef;
-  --bannaa-muted: #9a9a93;
-  --bannaa-subtle: #6b6b66;
-  --bannaa-accent: #d4ff3a;
-  --bannaa-accent-hover: #ddff59;
-  --bannaa-accent-glow: rgba(212, 255, 58, 0.2);
-  --bannaa-accent-ink: #0a0a0a;
-  --bannaa-warning: #ff6a3d;
-  --bannaa-ok: #8ae66e;
-  --bannaa-header-bg: #111111;
-  --bannaa-body-rgb: 10, 10, 10;
-  --bannaa-accent-rgb: 212, 255, 58;
-}
-
 html[data-theme="light"] {
   color-scheme: light;
 
@@ -43,6 +21,29 @@ html[data-theme="light"] {
   --bannaa-header-bg: #ffffff;
   --bannaa-body-rgb: 255, 255, 255;
   --bannaa-accent-rgb: 255, 106, 61;
+}
+
+html[data-theme="dark"],
+html[data-theme="night_theme"] {
+  color-scheme: dark;
+
+  --bannaa-bg: #0a0a0a;
+  --bannaa-surface: #111111;
+  --bannaa-recessed: #161616;
+  --bannaa-line: #242424;
+  --bannaa-line-strong: #2e2e2e;
+  --bannaa-text: #f2f2ef;
+  --bannaa-muted: #9a9a93;
+  --bannaa-subtle: #6b6b66;
+  --bannaa-accent: #d4ff3a;
+  --bannaa-accent-hover: #ddff59;
+  --bannaa-accent-glow: rgba(212, 255, 58, 0.2);
+  --bannaa-accent-ink: #0a0a0a;
+  --bannaa-warning: #ff6a3d;
+  --bannaa-ok: #8ae66e;
+  --bannaa-header-bg: #111111;
+  --bannaa-body-rgb: 10, 10, 10;
+  --bannaa-accent-rgb: 212, 255, 58;
 }
 
 :root {

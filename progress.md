@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 18:15:25 CDT
+Last updated: 2026-05-05 18:42:58 CDT
 
 ## Project Goal
 
@@ -2298,6 +2298,58 @@ Remaining blockers:
 
 ```text
 The reported top-area blue issue and English logo issue are verified fixed on the live site.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 18:42:58 CDT Update
+
+Started a follow-up change to make the live Bannaa theme use the light design tokens by default.
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+None yet for this pass.
+```
+
+Deployment state:
+
+```text
+Local overlay changes only so far.
+```
+
+Verification result:
+
+```text
+Changed bannaa_light.css so :root and html[data-theme="light"] use the light palette:
+- background #ffffff.
+- surface #f6f6f4.
+- text #0e0e0c.
+- accent #ff6a3d.
+- accent ink #ffffff.
+- header background #ffffff.
+
+Moved dark tokens behind explicit html[data-theme="dark"] and html[data-theme="night_theme"] selectors so the live default no longer renders dark when the html element has no theme attribute.
+Bumped Rails asset version to 1.1-bannaa-20260505-14.
+
+Validation passed:
+- bash -n build/scripts/apply-bannaa-overlays.sh.
+- embedded Ruby from build/scripts/apply-bannaa-overlays.sh passed ruby -c.
+- fresh upstream Forem overlay check confirmed the light default selectors and asset version 1.1-bannaa-20260505-14.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the light-default theme change, wait for a successful image build, deploy to the VPS, then verify live home/article light colors and top-area colors.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
