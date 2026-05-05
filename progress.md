@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 21:31:34 CDT
+Last updated: 2026-05-04 22:01:02 CDT
 
 ## Project Goal
 
@@ -554,3 +554,102 @@ Only bannaa_rtl.css is directly added to app/assets/config/manifest.js
 ```
 
 Next step: commit and push the build-fix patch, then watch the next GitHub Actions image build.
+
+## 2026-05-04 22:01:02 CDT Update
+
+The build-fix patch was committed and pushed:
+
+```text
+a778dd3 Fix Forem image asset manifest overlay
+```
+
+GitHub Actions run:
+
+```text
+Run ID: 25354730954
+Result: success
+Published image: ghcr.io/moeghashim/bannaa-club:production
+Digest pulled on VPS: sha256:bf7ebc8da25ba24b3e5027fa637f034da350f712bd9a0773f85aab3e83450966
+```
+
+The VPS was updated to use the custom image:
+
+```text
+FOREM_IMAGE=ghcr.io/moeghashim/bannaa-club:production
+```
+
+Remote commands run:
+
+```text
+docker pull ghcr.io/moeghashim/bannaa-club:production
+cp /opt/forem/config/forem.env /opt/forem/config/forem.env.bak.<timestamp>
+sed -i to update FOREM_IMAGE
+docker compose --env-file /opt/forem/config/forem.env run --rm web bundle exec rails db:migrate
+docker compose --env-file /opt/forem/config/forem.env up -d web worker
+```
+
+After deployment, the homepage returned 500 due to a durable image asset gap:
+
+```text
+Asset `homePage.js` was not declared to be precompiled in production.
+couldn't find file '@honeybadger-io/js/dist/browser/honeybadger.js'
+```
+
+Root cause refinement:
+
+- Forem's Docker build generates JS bundles into `app/assets/builds`.
+- Direct manifest links are required for the home bundles used by `javascript_include_tag "homePage"`.
+- During image build, `app/assets/builds` must exist before Rails initializes asset paths.
+- Without that directory present early, direct links fail during CI; without direct links, runtime requests fail.
+
+Temporary live workaround applied inside `forem-web-1`:
+
+```text
+created a minimal Honeybadger browser JS stub
+added direct manifest links for homePage.js, homePageFeed.js, homePageFeedShortcuts.js
+ran RAILS_ENV=production NODE_ENV=production bundle exec rails assets:precompile
+restarted forem-web-1
+```
+
+Verification after temporary workaround:
+
+```text
+https://club.bannaa.ai/ -> HTTP 200
+https://club.bannaa.ai/robots.txt -> HTTP 200
+```
+
+Durable overlay fix prepared locally:
+
+```text
+build/overlays/app/assets/builds/.keep
+build/scripts/apply-bannaa-overlays.sh
+build/README.md
+progress.md
+```
+
+The overlay now:
+
+- keeps `app/assets/builds` present before Rails boots during image build,
+- adds direct manifest links for `homePage.js`, `homePageFeed.js`, and `homePageFeedShortcuts.js`,
+- keeps the RTL stylesheet manifest link.
+
+Local validation performed against a fresh upstream Forem checkout at `/tmp/forem-overlay-test-buildfix2`:
+
+```text
+build/scripts/apply-bannaa-overlays.sh /tmp/forem-overlay-test-buildfix2
+test -d app/assets/builds
+YAML parse for config/locales/**/*.yml
+ruby -c app/helpers/application_helper.rb
+manifest check for homePage/homePageFeed/homePageFeedShortcuts/bannaa_rtl links
+```
+
+Result:
+
+```text
+builds dir OK
+YAML OK
+Syntax OK
+manifest links present
+```
+
+Next step: commit and push the durable asset-path fix, watch the next image build, then pull/recreate the VPS containers from the rebuilt image so the temporary live workaround is no longer needed.

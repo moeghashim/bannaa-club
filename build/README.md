@@ -24,5 +24,6 @@ Current overlay scope:
 - Arabic locale allowlist in `ApplicationController`.
 - Dynamic `<html lang>` and `dir`.
 - RTL helper and RTL stylesheet.
-- RTL stylesheet asset manifest link.
+- Keeps `app/assets/builds` present before Rails boots during image build.
+- Asset manifest links for the RTL stylesheet and Forem home feed bundles.
 - Admin default-locale selector support for Arabic.

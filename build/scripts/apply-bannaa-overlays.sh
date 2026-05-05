@@ -60,7 +60,10 @@ end
 manifest = File.join(root, "app/assets/config/manifest.js")
 manifest_text = File.read(manifest)
 [
-  "//= link bannaa_rtl.css"
+  "//= link bannaa_rtl.css",
+  "//= link homePage.js",
+  "//= link homePageFeed.js",
+  "//= link homePageFeedShortcuts.js"
 ].each do |line|
   manifest_text << "\n#{line}\n" unless manifest_text.include?(line)
 end
