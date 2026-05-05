@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 16:53:02 CDT
+Last updated: 2026-05-05 17:23:48 CDT
 
 ## Project Goal
 
@@ -1682,6 +1682,60 @@ Comment/user/tag search still use their existing upstream matching and may need 
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
 
+## 2026-05-05 17:23:48 CDT Update
+
+Started a follow-up fix for remaining Forem blue coming from default bitmap assets rather than CSS.
+
+Files changed:
+
+```text
+build/overlays/app/assets/images/icon.png
+build/overlays/app/assets/images/favicon.ico
+build/scripts/apply-bannaa-overlays.sh
+build/README.md
+progress.md
+```
+
+Implementation notes:
+
+- Live computed-style scan found no blue CSS colors on the article page.
+- Remaining visible blue source was the default Forem `Settings::General.logo_png` image, served as `/assets/icon-*.png` and used in the comment form avatar and metadata assets.
+- Added a Bannaa dark logo `icon.png` overlay matching `design/DESIGN.md`: near-black canvas, off-white structural frame, electric-lime center block.
+- Added matching `favicon.ico` overlay.
+- Bumped the Rails asset version to `1.1-bannaa-20260505-10`.
+- Updated build documentation to include default Bannaa icon/favicon assets in the overlay scope.
+
+Remote commands run:
+
+```text
+None yet.
+```
+
+Deployment state:
+
+```text
+Local overlay changes only. No image build or VPS deployment has run for the icon replacement yet.
+```
+
+Verification result:
+
+```text
+Live article computed-style scan: no visible elements with blue CSS color/background/border/fill/stroke.
+Live article visible images showed remaining default logo image: /assets/icon-df697aef2236b3b7369d9981f4f9d393faf28b531fcec31340fdc4529014db6e.png.
+Generated overlay icon.png: PNG image data, 1024x1024, 8-bit/color RGBA.
+Generated overlay favicon.ico: ICO with PNG image data, 32x32, 32 bits/pixel.
+bash -n build/scripts/apply-bannaa-overlays.sh
+awk '<extract embedded Ruby from apply-bannaa-overlays.sh>' | ruby -c
+Fresh upstream Forem overlay check confirmed icon.png/favicon.ico replacement and Rails asset version 1.1-bannaa-20260505-10.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the icon asset overlay, wait for a successful image build, deploy it to the VPS, then verify the live default icon/avatar no longer renders Forem blue.
+Unrelated local README.md documentation change remains present and should be handled separately.
+```
+
 ## 2026-05-05 16:53:02 CDT Update
 
 Fixed the first brand-theme image build failure.
@@ -1824,5 +1878,147 @@ Remaining blockers:
 ```text
 Build and publish a new Forem image, deploy it on the VPS, then visually verify the article page and home feed in Arabic RTL.
 Confirm live primary buttons use Bannaa accent colors instead of Forem blue after asset cache/version update.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 17:04:41 CDT Update
+
+Decided the GitHub root README needed an update because the repository only had nested build/deploy READMEs and the public repository page did not explain the project in English and Arabic.
+
+Files changed:
+
+```text
+README.md
+progress.md
+```
+
+Remote commands run:
+
+```text
+None.
+```
+
+Deployment state:
+
+```text
+Documentation-only local change. No VPS deployment or image build was run.
+```
+
+Verification result:
+
+```text
+Root README.md now explains Bannaa Club in English and Arabic, points readers to progress.md, design/BANNAA_DESIGN_REFERENCE.md, build/README.md, and deploy/README.md, and repeats the secret-handling boundary.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the README/progress documentation update if it should appear on GitHub.
+Existing build/deploy blockers from the brand-theme CSS fix remain unchanged.
+```
+
+## 2026-05-05 17:06:03 CDT Update
+
+Fixed the Bannaa stylesheet cascade order after live browser verification showed Forem body styles still overriding non-button surfaces.
+
+Files changed:
+
+```text
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+ssh -i ~/.ssh/forem_hostinger_bsocial root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+curl -fsSL https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/bannaa_qa_1778001192/khtbr-rhl-bannaa-1778001243-1674
+Headless Chrome DevTools Protocol check at 1536x900.
+```
+
+Deployment state:
+
+```text
+Commit c72ba9b built successfully in GitHub Actions run 25404376688 and was deployed to the VPS.
+forem-web-1 and forem-worker-1 were recreated with ghcr.io/moeghashim/bannaa-club:production.
+forem-postgres-1 and forem-redis-1 remained running.
+Homepage returned HTTP 200.
+Live article page served new bannaa_light asset hash c6690265926693ec83996e802cb30690345c2a361bf737c6fe40007d5b6e84f9.
+```
+
+Verification result:
+
+```text
+At 1536x900, visible overflow list was empty.
+Article actions column rendered inside viewport: left 1386, right 1442, width 56.
+Follow/default button computed background rgb(212, 255, 58) and text rgb(10, 10, 10), not Forem blue.
+Found remaining cascade issue: Forem secondary styles and #body-styles are loaded after Bannaa styles, leaving some surfaces/text partially overridden.
+Updated overlay script to place Bannaa CSS after #body-styles and bumped Rails asset version to 1.1-bannaa-20260505-9.
+Fresh upstream Forem overlay check confirmed generated order: secondary styles, #body-styles, bannaa_light, bannaa_rtl.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the cascade-order fix, wait for a successful image build, redeploy, then visually verify article and home pages again.
+Unrelated local README/progress documentation changes are present and should be handled separately.
+```
+
+## 2026-05-05 17:18:04 CDT Update
+
+Deployed and verified the final Bannaa CSS cascade fix.
+
+Files changed:
+
+```text
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25404940566 --repo moeghashim/bannaa-club --exit-status
+ssh -i ~/.ssh/forem_hostinger_bsocial root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+curl -fsSL https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/bannaa_qa_1778001192/khtbr-rhl-bannaa-1778001243-1674
+Headless Chrome DevTools Protocol checks at 1536x900 for article and home pages.
+```
+
+Deployment state:
+
+```text
+Commit aaac2ef built successfully in GitHub Actions run 25404940566.
+Published image: ghcr.io/moeghashim/bannaa-club:production.
+forem-web-1 and forem-worker-1 were recreated with the production image.
+forem-postgres-1 and forem-redis-1 remained running.
+Homepage returned HTTP 200.
+Live article page now loads Bannaa CSS after Forem secondary styles and #body-styles:
+secondary minimal/views/crayons, #body-styles, bannaa_light, bannaa_rtl.
+Live article page served bannaa_light asset hash d172373343036ea20318ce31b1f5ad4db2a36f5aec2927571a30758b992916d0.
+```
+
+Verification result:
+
+```text
+Article page at 1536x900:
+- body scroll width: 1536.
+- visible overflow elements: none.
+- layout bounds: left 48, right 1488, width 1440.
+- article actions bounds: left 1432, right 1488, width 56.
+- follow/default button background: rgb(212, 255, 58); text: rgb(10, 10, 10).
+- article surface background: rgb(17, 17, 17); text: rgb(242, 242, 239).
+
+Home page at 1536x900:
+- body scroll width: 1536.
+- visible overflow elements: none.
+- layout bounds: left 48, right 1488, width 1440.
+```
+
+Remaining blockers:
+
+```text
+The two reported issues are verified fixed on the live site.
+Unrelated local README.md and progress.md documentation changes are still present and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
