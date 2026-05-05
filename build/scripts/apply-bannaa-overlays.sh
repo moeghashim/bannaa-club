@@ -91,7 +91,7 @@ File.write(manifest, manifest_text)
 
 assets_initializer = File.join(root, "config/initializers/assets.rb")
 assets_text = File.read(assets_initializer)
-bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-3"'
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-4"'
 unless assets_text.include?(bannaa_asset_version)
   assets_text = assets_text.sub(
     /^Rails\.application\.config\.assets\.version = .+$/,
@@ -263,6 +263,33 @@ replace_many(
   {
     '<title id="d6cd43ffbad3fe639e2e95c901ee88c8">Moderation</title>' => '<title id="d6cd43ffbad3fe639e2e95c901ee88c8">الإشراف</title>',
     "                Moderate\n" => "                إشراف\n",
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/_multiple_reactions.html.erb"),
+  {
+    "description: reaction_type.name," => 'description: t("views.reactions.category.#{reaction_type.slug}", default: reaction_type.name),',
+    "aria_label: reaction_type.name" => 'aria_label: t("views.reactions.category.#{reaction_type.slug}", default: reaction_type.name)',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/_multiple_engagements.html.erb"),
+  {
+    'aria-label="<%= reaction_type.name %>"' => 'aria-label="<%= t("views.reactions.category.#{reaction_type.slug}", default: reaction_type.name) %>"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/assets/javascripts/initializers/initializeBaseUserData.js"),
+  {
+    'rel="nofollow">Edit</a>`' => 'rel="nofollow">تحرير</a>`',
+    'rel="nofollow">Manage</a>`' => 'rel="nofollow">إدارة</a>`',
+    'rel="nofollow">Stats</a>`' => 'rel="nofollow">الإحصاءات</a>`',
+    'data-no-instant>Admin</a>`' => 'data-no-instant>المدير</a>`',
+    '" class="crayons-link crayons-link--block" data-no-instant>Settings</a>\';' => '" class="crayons-link crayons-link--block" data-no-instant>الإعدادات</a>\';',
+    '" rel="nofollow" class="crayons-link crayons-link--block">Moderate</a>\';' => '" rel="nofollow" class="crayons-link crayons-link--block">إشراف</a>\';',
   },
 )
 
@@ -468,6 +495,37 @@ replace_many(
 )
 
 replace_many(
+  File.join(root, "app/javascript/CommentSubscription/CommentSubscription.jsx"),
+  {
+    '<title id="ai2ols8ka2ohfp0z568lj68ic2du21s">Preferences</title>' => '<title id="ai2ols8ka2ohfp0z568lj68ic2du21s">التفضيلات</title>',
+    'labelText="Comment subscription options"' => 'labelText="خيارات الاشتراك في التعليقات"',
+    "{subscribed ? 'Unsubscribe' : 'Subscribe'}" => "{subscribed ? 'إلغاء الاشتراك' : 'اشتراك'}",
+    "All comments" => "كل التعليقات",
+    "You’ll receive notifications for all new comments." => "ستتلقى تنبيهات لكل التعليقات الجديدة.",
+    "Top-level comments" => "التعليقات الرئيسية",
+    "You’ll receive notifications only for all new top-level\n                    comments." => "ستتلقى تنبيهات للتعليقات الرئيسية الجديدة فقط.",
+    "Post author comments" => "تعليقات كاتب المنشور",
+    "You’ll receive notifications only if post author sends a new\n                    comment." => "ستتلقى تنبيهات فقط عندما يضيف كاتب المنشور تعليقًا جديدًا.",
+    "\n              Done\n" => "\n              تم\n",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/packs/subscribeButton.js"),
+  {
+    "const verb = subscriptionIsActive ? 'Subscribed' : 'Subscribe';" => "const verb = subscriptionIsActive ? 'مشترك' : 'اشترك';",
+    "noun = 'thread';" => "noun = 'السلسلة';",
+    "label = `${verb} to top-level comments`;" => "label = subscriptionIsActive ? 'مشترك في التعليقات الرئيسية' : 'اشترك في التعليقات الرئيسية';",
+    "mobileLabel = `Top-level ${noun}`;" => "mobileLabel = 'التعليقات الرئيسية';",
+    "label = `${verb} to author comments`;" => "label = subscriptionIsActive ? 'مشترك في تعليقات الكاتب' : 'اشترك في تعليقات الكاتب';",
+    "mobileLabel = `Author ${noun}`;" => "mobileLabel = 'تعليقات الكاتب';",
+    "label = `${verb} to ${noun}`;" => "label = subscriptionIsActive ? `مشترك في ${noun}` : `اشترك في ${noun}`;",
+    "mobileLabel = `${noun}`.charAt(0).toUpperCase() + noun.slice(1);" => "mobileLabel = noun;",
+    "let noun = 'comments';" => "let noun = 'التعليقات';",
+  },
+)
+
+replace_many(
   File.join(root, "app/javascript/article-form/components/Options.jsx"),
   {
     "Convert to a Draft" => "تحويل إلى مسودة",
@@ -540,6 +598,13 @@ replace_many(
   File.join(root, "app/views/comments/settings.html.erb"),
   {
     'f.submit "Unsubscribe from parent post", class: "crayons-btn crayons-btn--secondary"' => 'f.submit t("views.comments.settings.subscribe.unsubscribe_parent"), class: "crayons-btn crayons-btn--secondary"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/comments/edit.html.erb"),
+  {
+    '<% title "Editing Comment" %>' => '<% title t("views.comments.edit") %>',
   },
 )
 
