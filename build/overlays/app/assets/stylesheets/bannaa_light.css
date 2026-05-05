@@ -361,7 +361,8 @@ a:not(.crayons-btn):not(.c-cta):hover {
   text-transform: uppercase;
 }
 
-.crayons-tag::before {
+.crayons-tag::before,
+.crayons-tag__prefix {
   color: var(--bannaa-accent);
 }
 
