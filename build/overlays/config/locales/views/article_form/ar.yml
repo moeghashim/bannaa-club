@@ -1,0 +1,9 @@
+---
+ar:
+  views:
+    article_form:
+      save_changes: حفظ التغييرات
+      schedule: جدولة
+      publish: نشر
+      loading_preview: جارٍ تحميل المعاينة
+      preview_loaded: تم تحميل المعاينة

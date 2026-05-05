@@ -1,0 +1,42 @@
+---
+ar:
+  views:
+    reactions:
+      category:
+        hands: أيدٍ
+        like: إعجاب
+        readinglist: قائمة القراءة
+        thinking: تفكير
+        thumbsup: إعجاب
+        thumbsdown: عدم إعجاب
+        unicorn: مميز
+        vomit: بلاغ
+        lightbulb: فكرة
+        raised_hands: أيدٍ مرفوعة
+        rocket: انطلاق
+        exploding_head: مدهش
+        fire: رائع
+      drawer_button: إضافة تفاعل
+      summary:
+        count_html:
+          one: "%{count}%{start} تفاعل%{end}"
+          other: "%{count}%{start} تفاعلات%{end}"
+        title: التفاعلات
+      like:
+        title: إعجاب
+        aria_label: إعجاب
+        icon: زر القلب المفضل
+        text: إعجاب
+      unicorn:
+        title: مميز
+        aria_label: تفاعل مميز
+      readingList:
+        title: حفظ
+        aria_label: إضافة إلى قائمة القراءة
+        icon: زر الحفظ
+        text: حفظ
+      subscribe:
+        title: الاشتراك في التعليقات
+        aria_label: الاشتراك في التعليقات
+        icon: زر الحفظ
+        text: الاشتراك في التعليقات

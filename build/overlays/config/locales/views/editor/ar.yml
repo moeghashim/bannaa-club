@@ -1,0 +1,35 @@
+---
+ar:
+  views:
+    editor:
+      meta:
+        title: تحرير المنشور
+      heading:
+        new: منشور جديد
+      create: إنشاء منشور
+      close:
+        icon: إغلاق
+        title: إغلاق المحرر
+      cover_image:
+        add: رفع صورة الغلاف
+        change: تغيير
+      cover_video_link:
+        add: رابط فيديو الغلاف
+        change: تغيير رابط الفيديو
+      edit: تحرير
+      modes: أوضاع عرض المنشور
+      new_title: عنوان المنشور الجديد هنا...
+      preview: معاينة
+      ai_helper:
+        sidecar_title: مساعد %{community_name}
+        title: مساعد %{community_name}
+        greeting: مرحبًا! أنا مساعد الكتابة. أعرف إرشادات محرر %{community_name}. هل تحتاج مساعدة في Markdown أو التضمينات أو التنسيق أو إرشادات المجتمع؟
+      video:
+        progress:
+          heading: جارٍ تحويل الفيديو
+          notice_1: ستصلك رسالة بريدية عند انتهاء العملية.
+          notice_2: هذا منشور غير منشور. أضف العنوان والوسوم والمحتوى، ثم انشره بعد انتهاء معالجة الفيديو.
+        submit_image:
+          button: إرسال التغيير
+          text: "رابط صورة المعاينة: "
+          placeholder: رابط الصورة المصغرة الجديدة

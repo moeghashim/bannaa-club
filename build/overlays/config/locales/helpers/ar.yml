@@ -8,6 +8,10 @@ ar:
         password_confirmation: تأكيد كلمة المرور
         remember_me: تذكرني
   helpers:
+    comments_helper:
+      nbsp_likes_html:
+        one: "&nbsp;إعجاب"
+        other: "&nbsp;%{count} إعجابات"
     label:
       user:
         email: البريد الإلكتروني

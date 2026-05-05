@@ -91,7 +91,7 @@ File.write(manifest, manifest_text)
 
 assets_initializer = File.join(root, "config/initializers/assets.rb")
 assets_text = File.read(assets_initializer)
-bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505"'
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-2"'
 unless assets_text.include?(bannaa_asset_version)
   assets_text = assets_text.sub(
     /^Rails\.application\.config\.assets\.version = .+$/,
@@ -219,6 +219,230 @@ replace_many(
     "<legend>Email preferences</legend>" => "<legend>تفضيلات البريد الإلكتروني</legend>",
     'I want to receive weekly newsletter emails.' => 'أريد تلقي رسائل النشرة الأسبوعية.',
     'I want to receive a periodic digest of top posts from my tags.' => 'أريد تلقي ملخص دوري بأفضل المنشورات من الوسوم التي أتابعها.',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/_v2_form.html.erb"),
+  {
+    'data-text="Edit"' => 'data-text="تحرير"',
+    'data-text="Preview"' => 'data-text="معاينة"',
+    'alt="Post cover"' => 'alt="غلاف المنشور"',
+    "🍌 Generate Image" => "إنشاء صورة",
+    '<h3 class="fs-base fw-bold m-0">Editor Guide</h3>' => '<h3 class="fs-base fw-bold m-0">دليل المحرر</h3>',
+    'aria-label="Close Editor Guide" title="Close Editor Guide"' => 'aria-label="إغلاق دليل المحرر" title="إغلاق دليل المحرر"',
+    'aria-label="Toggle AI Editor Helper" title="Toggle AI Editor Helper"' => 'aria-label="فتح مساعد التحرير الذكي" title="فتح مساعد التحرير الذكي"',
+    'aria-label="Close AI Helper" title="Close AI Helper"' => 'aria-label="إغلاق المساعد الذكي" title="إغلاق المساعد الذكي"',
+    'BETA' => 'تجريبي',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/show.html.erb"),
+  {
+    '<h2 class="crayons-subtitle-2">Boost Post to the Feed</h2>' => '<h2 class="crayons-subtitle-2">تعزيز المنشور في الخلاصة</h2>',
+    'aria-label="Close"' => 'aria-label="إغلاق"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/_fullscreen_embed.html.erb"),
+  {
+    '<h2 class="crayons-subtitle-2">Boost Post to the Feed</h2>' => '<h2 class="crayons-subtitle-2">تعزيز المنشور في الخلاصة</h2>',
+    'aria-label="Close"' => 'aria-label="إغلاق"',
+    "          Moderate\n" => "          إشراف\n",
+    "const modTitle = 'Moderation Actions';" => "const modTitle = 'إجراءات الإشراف';",
+    'title="Moderation panel actions"' => 'title="إجراءات لوحة الإشراف"',
+    'title="Article comments"' => 'title="تعليقات المقال"',
+    "const commentsTitle = `Comments${document.querySelector('.js-comments-count') ? ' ' + document.querySelector('.js-comments-count').outerHTML : ''}`;" => "const commentsTitle = `التعليقات${document.querySelector('.js-comments-count') ? ' ' + document.querySelector('.js-comments-count').outerHTML : ''}`;",
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/_actions.html.erb"),
+  {
+    '<title id="d6cd43ffbad3fe639e2e95c901ee88c8">Moderation</title>' => '<title id="d6cd43ffbad3fe639e2e95c901ee88c8">الإشراف</title>',
+    "                Moderate\n" => "                إشراف\n",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Tabs.jsx"),
+  {
+    'aria-label="View post modes"' => 'aria-label="أوضاع عرض المنشور"',
+    'data-text="Edit"' => 'data-text="تحرير"',
+    'data-text="Preview"' => 'data-text="معاينة"',
+    "\n            Edit\n" => "\n            تحرير\n",
+    "\n            Preview\n" => "\n            معاينة\n",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Toolbar.jsx"),
+  {
+    'title="Upload Agent Session"' => 'title="رفع جلسة الوكيل"',
+    'aria-label="Upload Agent Session"' => 'aria-label="رفع جلسة الوكيل"',
+    "\n            Agent Session\n" => "\n            جلسة الوكيل\n",
+    'aria-label="Help"' => 'aria-label="مساعدة"',
+    'title="Help"' => 'title="مساعدة"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/crayons/MarkdownToolbar/markdownSyntaxFormatters.jsx"),
+  {
+    "label: 'Bold'," => "label: 'غامق',",
+    "label: 'Italic'," => "label: 'مائل',",
+    "label: 'Link'," => "label: 'رابط',",
+    "label: 'Ordered list'," => "label: 'قائمة مرقمة',",
+    "label: 'Unordered list'," => "label: 'قائمة نقطية',",
+    "label: 'Heading'," => "label: 'عنوان',",
+    "label: 'Quote'," => "label: 'اقتباس',",
+    "label: 'Code'," => "label: 'كود',",
+    "label: 'Code block'," => "label: 'كتلة كود',",
+    "label: 'Embed'," => "label: 'تضمين',",
+    "label: 'Underline'," => "label: 'تسطير',",
+    "label: 'Strikethrough'," => "label: 'يتوسطه خط',",
+    "label: 'Line divider'," => "label: 'فاصل',",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/crayons/MarkdownToolbar/MarkdownToolbar.jsx"),
+  {
+    '<span aria-hidden="true">Upload image</span>' => '<span aria-hidden="true">رفع صورة</span>',
+    'aria-label="More options"' => 'aria-label="خيارات أكثر"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/ImageUploader.jsx"),
+  {
+    'aria-label="Upload an image"' => 'aria-label="رفع صورة"',
+    'aria-label="Upload image"' => 'aria-label="رفع صورة"',
+    'aria-label="Cancel image upload"' => 'aria-label="إلغاء رفع الصورة"',
+    'tooltip="Cancel upload"' => 'tooltip="إلغاء الرفع"',
+    "<Spinner /> Uploading..." => "<Spinner /> جارٍ الرفع...",
+    "Upload image" => "رفع صورة",
+    "image\n            <input" => "\n            <input",
+    "`![Image description](${response.links})`" => "`![وصف الصورة](${response.links})`",
+    "'image upload complete'" => "'اكتمل رفع الصورة'",
+    "`![Image description](${message.link})`" => "`![وصف الصورة](${message.link})`",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/EditorActions.jsx"),
+  {
+    "? 'Publishing...'\n            : `Saving ${isVersion2 ? 'post' : ''}...`" => "? 'جارٍ النشر...'\n            : `جارٍ حفظ ${isVersion2 ? 'المنشور' : ''}...`",
+    "Save <span className=\"hidden s:inline\">Draft</span>" => "حفظ <span className=\"hidden s:inline\">كمسودة</span>",
+    "⏰ Scheduled" => "⏰ مجدول",
+    "🔗 Canonical" => "🔗 الرابط الأصلي",
+    "title={`Series: ${series}`}" => "title={`سلسلة: ${series}`}",
+    "Revert <span className=\"hidden s:inline\">new changes</span>" => "التراجع عن <span className=\"hidden s:inline\">التغييرات الجديدة</span>",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/Options.jsx"),
+  {
+    "Convert to a Draft" => "تحويل إلى مسودة",
+    "Danger Zone" => "منطقة حساسة",
+    "Unpublish post" => "إلغاء نشر المنشور",
+    "Schedule Publication" => "جدولة النشر",
+    "Set a date and time to publish your post in the future. Leave empty to publish immediately." => "حدد تاريخًا ووقتًا لنشر المنشور لاحقًا. اتركه فارغًا للنشر فورًا.",
+    "\n              Date\n" => "\n              التاريخ\n",
+    'aria-label="Schedule publication date"' => 'aria-label="تاريخ النشر المجدول"',
+    "\n              Time\n" => "\n              الوقت\n",
+    'aria-label="Schedule publication time"' => 'aria-label="وقت النشر المجدول"',
+    "<strong>Post will be published:</strong>" => "<strong>سيتم نشر المنشور:</strong>",
+    "Using your local timezone:" => "باستخدام منطقتك الزمنية المحلية:",
+    "Current time:" => "الوقت الحالي:",
+    "Clear schedule" => "مسح الجدولة",
+    'title="Advanced Post options"' => 'title="خيارات المنشور المتقدمة"',
+    'aria-label="Advanced Post options"' => 'aria-label="خيارات المنشور المتقدمة"',
+    "Advanced Options" => "خيارات متقدمة",
+    'title="Advanced Post Options"' => 'title="خيارات المنشور المتقدمة"',
+    "Canonical URL" => "الرابط الأصلي",
+    "Change meta tag <code>canonical_url</code> if this post was first published elsewhere (like your own blog)." => "غيّر وسم <code>canonical_url</code> إذا كان هذا المنشور منشورًا أولًا في مكان آخر، مثل مدونتك.",
+    "\n                  Series\n" => "\n                  سلسلة\n",
+    "Organize your posts into a series for better discoverability." => "نظم منشوراتك ضمن سلسلة لتسهيل اكتشافها.",
+    "Done" => "تم",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/articleForm.jsx"),
+  {
+    'aria-label="Edit post"' => 'aria-label="تحرير المنشور"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/article-form/components/SeriesSelectorModal.jsx"),
+  {
+    'title="Manage Series"' => 'title="إدارة السلاسل"',
+    "Select an existing series" => "اختر سلسلة موجودة",
+    "Personal" => "شخصي",
+    "Create new series" => "إنشاء سلسلة جديدة",
+    "Give your series a unique name. The series will be visible once it has multiple posts." => "اختر اسمًا فريدًا للسلسلة. ستظهر السلسلة عندما تحتوي على أكثر من منشور.",
+    "<strong>Currently selected:</strong>" => "<strong>المحدد حاليًا:</strong>",
+    "Remove series" => "إزالة السلسلة",
+    "Create a new series" => "إنشاء سلسلة جديدة",
+    "Series name" => "اسم السلسلة",
+    'placeholder="Enter series name..."' => 'placeholder="أدخل اسم السلسلة..."',
+    "Create series" => "إنشاء السلسلة",
+    "Cancel" => "إلغاء",
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/comments/settings.html.erb"),
+  {
+    'f.submit "Unsubscribe from parent post", class: "crayons-btn crayons-btn--secondary"' => 'f.submit t("views.comments.settings.subscribe.unsubscribe_parent"), class: "crayons-btn crayons-btn--secondary"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/articles/manage.html.erb"),
+  {
+    '<h3 class="manage-sidebar-title">Sections</h3>' => '<h3 class="manage-sidebar-title">الأقسام</h3>',
+    ">Overview</a>" => ">نظرة عامة</a>",
+    ">Statistics</a>" => ">الإحصاءات</a>",
+    ">Edit Post</a>" => ">تحرير المنشور</a>",
+    ">Pin to Profile</a>" => ">تثبيت في الملف الشخصي</a>",
+    ">Discussion Lock</a>" => ">قفل النقاش</a>",
+    ">Delete Post</a>" => ">حذف المنشور</a>",
+    ">Tips</a>" => ">نصائح</a>",
+    '<h2 class="crayons-title mb-4">Post Overview</h2>' => '<h2 class="crayons-title mb-4">نظرة عامة على المنشور</h2>',
+    "Series: <%= @article.series %>" => "السلسلة: <%= @article.series %>",
+    "\n          Published <%= tag.time(@article.readable_publish_date, datetime: @article.published_timestamp) %>" => "\n          نُشر <%= tag.time(@article.readable_publish_date, datetime: @article.published_timestamp) %>",
+    "· Edited <%= tag.time(@article.readable_edit_date, datetime: @article.edited_at.utc.iso8601) %>" => "· حُرر <%= tag.time(@article.readable_edit_date, datetime: @article.edited_at.utc.iso8601) %>",
+    "<strong>Draft</strong> - This post is not published yet." => "<strong>مسودة</strong> - لم يتم نشر هذا المنشور بعد.",
+    "<h4 class=\"mb-2 fw-bold\">Organization Admin: Change Author</h4>" => "<h4 class=\"mb-2 fw-bold\">إدارة المنظمة: تغيير الكاتب</h4>",
+    '<label class="mb-0">Author:</label>' => '<label class="mb-0">الكاتب:</label>',
+    'f.submit "Update Author", class: "crayons-btn crayons-btn--secondary"' => 'f.submit "تحديث الكاتب", class: "crayons-btn crayons-btn--secondary"',
+    '<h2 class="crayons-title mb-0">Statistics</h2>' => '<h2 class="crayons-title mb-0">الإحصاءات</h2>',
+    ">View Detailed Stats</a>" => ">عرض الإحصاءات التفصيلية</a>",
+    ">Page Views</div>" => ">مشاهدات الصفحة</div>",
+    ">Reactions</div>" => ">التفاعلات</div>",
+    ">Comments</div>" => ">التعليقات</div>",
+    '<h2 class="crayons-title mb-2">Edit Post</h2>' => '<h2 class="crayons-title mb-2">تحرير المنشور</h2>',
+    "Make changes to your post content, title, tags, or cover image." => "عدّل محتوى المنشور أو عنوانه أو وسومه أو صورة الغلاف.",
+    '<h2 class="crayons-title mb-2">Pin to Profile</h2>' => '<h2 class="crayons-title mb-2">تثبيت في الملف الشخصي</h2>',
+    "Pinning a post to your profile makes it appear at the top of your profile page. You can pin up to 5 posts to highlight your best work." => "تثبيت منشور في ملفك الشخصي يجعله يظهر أعلى الصفحة. يمكنك تثبيت حتى 5 منشورات لإبراز أفضل أعمالك.",
+    "\n            Unpin from Profile\n" => "\n            إلغاء التثبيت من الملف الشخصي\n",
+    "This post is currently pinned to your profile." => "هذا المنشور مثبت حاليًا في ملفك الشخصي.",
+    "\n            Pin to Profile\n" => "\n            تثبيت في الملف الشخصي\n",
+    '<h2 class="crayons-title mb-2">Discussion Lock</h2>' => '<h2 class="crayons-title mb-2">قفل النقاش</h2>',
+    "Locking the discussion prevents new comments from being posted. Existing comments will remain visible. This is useful if you want to close the conversation on your article." => "قفل النقاش يمنع إضافة تعليقات جديدة. ستبقى التعليقات الحالية ظاهرة. هذا مفيد إذا أردت إغلاق النقاش على مقالك.",
+    "\n          Unlock Discussion\n" => "\n          فتح النقاش\n",
+    "Discussion is currently locked. No new comments can be posted." => "النقاش مقفل حاليًا. لا يمكن إضافة تعليقات جديدة.",
+    "\n          Lock Discussion\n" => "\n          قفل النقاش\n",
+    '<h2 class="crayons-title mb-2">Delete Post</h2>' => '<h2 class="crayons-title mb-2">حذف المنشور</h2>',
+    "<strong>Recommendation:</strong> Instead of deleting, consider unpublishing your post. This keeps your content and its history while removing it from public view. You can always republish it later." => "<strong>توصية:</strong> بدلًا من الحذف، يمكنك إلغاء نشر المنشور. هذا يحافظ على المحتوى وتاريخه مع إزالته من العرض العام. يمكنك إعادة نشره لاحقًا.",
+    "<strong>Warning:</strong> Deleting your post is permanent and cannot be undone. All comments, reactions, and statistics will be lost." => "<strong>تحذير:</strong> حذف المنشور دائم ولا يمكن التراجع عنه. ستفقد كل التعليقات والتفاعلات والإحصاءات.",
+    "\n          Delete Post\n" => "\n          حذف المنشور\n",
   },
 )
 

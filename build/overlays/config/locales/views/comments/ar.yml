@@ -1,0 +1,161 @@
+---
+ar:
+  views:
+    comments:
+      meta:
+        title_root: نقاش %{title}
+        description: مقال من المجتمع
+        og:
+          title: نقاش %{title}
+          title_rel: "%{root} - %{site}"
+          title_root: "[نقاش] %{title} - %{site}"
+          description: تعليق %{site}
+      parent:
+        subtitle_html: "%{start}النقاش حول:%{end}%{title}"
+        metadata_html: "%{name}%{on}"
+        date: " في %{date}"
+        full: النقاش الكامل
+        read: قراءة المنشور الكامل
+        view: عرض المنشور
+        view_full:
+          one: عرض النقاش الكامل (تعليق واحد)
+          other: عرض النقاش الكامل (%{count} تعليقات)
+        reply_html: "%{start}الردود على:%{end} %{title}"
+      delete:
+        heading: هل تريد حذف هذا التعليق؟
+        desc_html: لا يمكنك التراجع عن هذا الإجراء، ربما تريد %{action} بدلًا من ذلك؟
+        action: تحرير
+        submit: حذف
+        edit: تحرير
+        cancel: إغلاق
+        comment_deleted: تم حذف التعليق
+      collapse: طي
+      edit: تحرير التعليق
+      edited:
+        text_html: "&bull; تم التحرير في %{date}"
+        short_html: "&bull; تم التحرير"
+      expand: توسيع
+      visible_signed_in:
+        text_html: قد تظهر بعض التعليقات للزوار المسجلين فقط. %{sign_in} لعرض كل التعليقات.
+        sign_in: سجّل الدخول
+      limited_unauthenticated:
+        text_html: يتم عرض جزء من التعليقات فقط. يرجى %{sign_in} لعرض كل التعليقات على هذا المنشور.
+        sign_in: تسجيل الدخول
+      hidden:
+        text_html: أخفى كاتب المنشور بعض التعليقات - %{info}
+        info: معرفة المزيد
+        comment_hidden: تعليق مخفي بواسطة كاتب المنشور
+      hider:
+        description_html: هل تريد إخفاء هذا التعليق؟ سيصبح مخفيًا في منشورك، لكنه سيظل متاحًا عبر %{permalink}.
+        hide_child: إخفاء التعليقات الفرعية أيضًا
+        note_html: لإجراءات إضافية، يمكنك حظر هذا الشخص و/أو %{reporting}
+        permalink: الرابط الدائم
+        reporting: الإبلاغ عن إساءة
+        submit: تأكيد
+      locked: تم قفل النقاش. لا يمكن إضافة تعليقات جديدة.
+      orphan:
+        deleted: "[تعليق من منشور محذوف]"
+      re:
+        text_html: "%{re}%{title}"
+        re: "رد: "
+      settings:
+        meta:
+          title: إعدادات التعليق
+        heading: إعدادات التعليق
+        state:
+          show:
+            subtitle: عرض تنبيهات السلسلة
+            desc: ستتلقى كل التنبيهات لهذا التعليق وأي تعليقات لك في هذه السلسلة.
+          mute:
+            subtitle: كتم تنبيهات السلسلة
+            desc: تنبيهات هذا التعليق وأي تعليقات لك في السلسلة مكتومة حاليًا.
+        subscribe:
+          subtitle: الاشتراك
+          desc: ما زلت مشتركًا في كل تعليقات السلسلة الأوسع، وستتلقى تنبيهات للردود على هذا التعليق.
+          mute: كتم التنبيهات
+          unmute: إلغاء كتم التنبيهات
+          unsubscribe_parent: إلغاء الاشتراك من المنشور الأصلي
+      quality:
+        low: وسم المجتمع هذا التعليق بأنه منخفض الجودة أو غير بنّاء.
+        superlow: درجة التعليق أقل من حد الإخفاء، ويظهر للمشرفين فقط.
+        conduct: عرض قواعد السلوك
+        hidden:
+          icon: معلومات
+          text:
+            visible_in_permalink: تعليق مخفي بواسطة كاتب المنشور - السلسلة تظهر فقط عبر هذا الرابط الدائم
+            accessible_via_permalink: تعليق مخفي بواسطة كاتب المنشور - السلسلة متاحة فقط عبر الرابط الدائم
+      write:
+        errors:
+          one: "منع خطأ واحد حفظ هذا التعليق:"
+          other: "منعت %{count} أخطاء حفظ هذا التعليق:"
+        field:
+          aria_label: أضف تعليقًا إلى النقاش
+          placeholder: أضف إلى النقاش
+          submit: رفع
+          templates: قوالب
+          upload: رفع صورة
+          use: استخدم قالب رد
+          guide:
+            title: دليل Markdown
+            icon: دليل المحرر
+        template:
+          article: يحتوي هذا المنشور على قالب تعليق
+          create:
+            subtitle: إنشاء قالب
+            desc: تساعدك القوالب على الرد سريعًا على الأسئلة المتكررة أو حفظ مقاطع لإعادة استخدامها.
+          moderator: مستخدم موثوق
+          personal: شخصي
+        submit: إرسال
+        preview: معاينة
+        continue_editing: متابعة التحرير
+        cancel: إغلاق
+      menu:
+        aria_label: فتح أو إغلاق القائمة
+        icon: قائمة منسدلة
+        copy:
+          aria_label: نسخ رابط تعليق %{user}
+          text: نسخ الرابط
+        settings:
+          aria_label: الذهاب إلى إعدادات تعليق %{user}
+        action:
+          aria_label: "%{action} تعليق %{user}"
+          hide: إخفاء
+          unhide: إظهار
+          hide_text: إخفاء
+          unhide_text: إظهار
+        moderate:
+          aria_label: الإشراف على تعليق %{user}
+        report:
+          aria_label: الإبلاغ عن تعليق %{user} باعتباره مسيئًا أو مخالفًا لقواعد السلوك أو الشروط
+      footer:
+        heart:
+          aria_label: إعجاب
+          title: إعجاب
+          icon: "إعجاب بالتعليق: "
+          count_html: "%{num}%{likes}"
+          text: إعجاب
+        reply:
+          aria_label: الرد على تعليق...
+          icon: زر التعليق
+          done: تم الرد
+          text: رد
+          placeholder: اكتب ردًا...
+        thread:
+          icon: سلسلة
+          text: سلسلة
+        view:
+          icon: زر العرض
+          text: عرض
+        subscribe:
+          icon: زر الاشتراك
+          text: الاشتراك في التعليقات
+      count:
+        one: تعليق واحد
+        other: "%{count} تعليقات"
+      empty: جديد
+      add: إضافة تعليق
+      summary:
+        count_html:
+          one: "%{count}%{start} تعليق%{end}"
+          other: "%{count}%{start} تعليقات%{end}"
+        title: التعليقات

@@ -1,0 +1,73 @@
+---
+ar:
+  views:
+    dashboard:
+      meta:
+        title: لوحة التحكم - %{site}
+      heading: لوحة التحكم
+      article:
+        heading:
+          text_html: "%{archived}%{title}"
+          archived: "[مؤرشف] "
+        archived: مؤرشف
+        published: "نُشر:"
+        published_html: "نُشر: %{date}"
+        edited: "حُرر:"
+        edited_html: "حُرر: %{date}"
+        series: "سلسلة:"
+        series_html: "<strong>سلسلة:</strong> %{series}"
+        draft: مسودة
+        scheduled: مجدول
+        scheduled_at: "مجدول:"
+        language: "اللغة:"
+        reactions:
+          title: التفاعلات
+          icon: التفاعلات
+          text_html:
+            one: "%{num} تفاعل"
+            other: "%{num} تفاعلات"
+        comments:
+          title: التعليقات
+          icon: التعليقات
+          text_html:
+            one: "%{num} تعليق"
+            other: "%{num} تعليقات"
+        views:
+          title: المشاهدات
+          icon: المشاهدات
+          lt_25: "< 25"
+          text_html:
+            one: "%{scale} مشاهدة"
+            other: "%{scale} مشاهدات"
+          u_25: أقل من 25
+        subscriptions:
+          title: الاشتراكات
+          icon: بيانات
+          number: الاشتراكات (%{num})
+        delete: حذف
+        unpin: إلغاء التثبيت
+        pin:
+          title: تثبيت في الملف الشخصي
+          button: تثبيت في الملف الشخصي
+          text: تثبيت
+        manage:
+          aria_label: "إدارة المنشور: %{title}"
+          text: إدارة
+        lock: قفل النقاش
+        unlock: فتح النقاش
+        edit:
+          aria_label: "تحرير المنشور: %{title}"
+          text: تحرير
+        more:
+          title: "خيارات أكثر للمنشور: %{title}"
+          icon: المزيد...
+        stats: الإحصاءات
+        archive: أرشفة المنشور
+        unarchive: إلغاء الأرشفة
+        author: الكاتب
+        co_authors: كتّاب مشاركون
+        series_author_change_warning: لا يسمح بتغيير الكاتب لمنشورات السلاسل.
+        icon: تفاصيل
+        author_is: "الكاتب: "
+        save: حفظ
+        submit: إرسال تغيير الكاتب
