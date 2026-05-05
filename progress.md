@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 07:18:18 CDT
+Last updated: 2026-05-05 07:39:20 CDT
 
 ## Project Goal
 
@@ -438,6 +438,52 @@ Remaining blockers:
 Visual review in a real browser is still useful because font rendering depends on the client loading Google Fonts successfully.
 If the desired Arabic font is not IBM Plex Sans Arabic, update design/BANNAA_DESIGN_REFERENCE.md first and then change the overlay token.
 Root password/API key rotation is still recommended from earlier setup notes.
+```
+
+## 2026-05-05 07:39:20 CDT - First Admin Creation Prep
+
+Files changed:
+
+```text
+deploy/secrets/admin-user.env.example
+progress.md
+```
+
+Local ignored file created:
+
+```text
+deploy/secrets/admin-user.env
+```
+
+Change:
+
+- Added an ignored local env-file location for the first Forem admin account values.
+- This lets the first admin be created from the VPS without pasting the admin password into chat or committing it.
+
+Remote commands run:
+
+```text
+none
+```
+
+Deployment state:
+
+```text
+No deployment change.
+```
+
+Verification result:
+
+```text
+deploy/secrets/admin-user.env exists locally with mode 600 and remains ignored by git.
+```
+
+Remaining blockers:
+
+```text
+User needs to fill deploy/secrets/admin-user.env with ADMIN_EMAIL, ADMIN_USERNAME, ADMIN_NAME, and ADMIN_PASSWORD.
+After that, create the first Forem creator/super_admin user on the VPS and verify login/admin access.
+The FOREM_OWNER_SECRET is only required while Forem has no first owner/admin user; normal users should not need it after setup is complete.
 ```
 
 Verified:
