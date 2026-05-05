@@ -91,7 +91,7 @@ File.write(manifest, manifest_text)
 
 assets_initializer = File.join(root, "config/initializers/assets.rb")
 assets_text = File.read(assets_initializer)
-bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-4"'
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-5"'
 unless assets_text.include?(bannaa_asset_version)
   assets_text = assets_text.sub(
     /^Rails\.application\.config\.assets\.version = .+$/,
@@ -99,6 +99,47 @@ unless assets_text.include?(bannaa_asset_version)
   )
   File.write(assets_initializer, assets_text)
 end
+
+replace_once(
+  File.join(root, "app/models/article.rb"),
+  <<-'RUBY'.chomp,
+  pg_search_scope :search_articles,
+                  against: :reading_list_document,
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      tsvector_column: :reading_list_document
+                    }
+                  },
+                  ignoring: :accents
+  RUBY
+  <<-'RUBY'.chomp,
+  pg_search_scope :bannaa_pg_search_articles,
+                  against: :reading_list_document,
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      tsvector_column: :reading_list_document
+                    }
+                  },
+                  ignoring: :accents
+
+  scope :search_articles, lambda { |term|
+    pg_search_relation = bannaa_pg_search_articles(term)
+    normalized_term = Bannaa::ArabicSearch.normalize(term)
+
+    if Bannaa::ArabicSearch.arabic?(term) && normalized_term.present?
+      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_term)}%"
+      where(
+        "#{table_name}.id IN (#{pg_search_relation.select("#{table_name}.id").to_sql}) OR #{Bannaa::ArabicSearch.article_match_sql}",
+        bannaa_arabic_search_pattern: pattern,
+      )
+    else
+      pg_search_relation
+    end
+  }
+  RUBY
+)
 
 replace_many(
   File.join(root, "app/javascript/onboarding/components/Navigation.jsx"),
