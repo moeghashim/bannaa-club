@@ -11,6 +11,7 @@ ar:
       invalid: البريد الإلكتروني أو كلمة المرور غير صحيحة.
       locked: حسابك مقفل.
       last_attempt: لديك محاولة أخيرة قبل قفل الحساب.
+      magic_link_invalid: رابط تسجيل الدخول غير صالح أو منتهي الصلاحية.
       not_found_in_database: البريد الإلكتروني أو كلمة المرور غير صحيحة.
       timeout: انتهت جلستك. سجل الدخول مرة أخرى للمتابعة.
       unauthenticated: يجب تسجيل الدخول أو إنشاء حساب للمتابعة.
@@ -26,18 +27,44 @@ ar:
         subject: تم تغيير البريد الإلكتروني
       password_change:
         subject: تم تغيير كلمة المرور
+      magic_link:
+        subject: رابط تسجيل الدخول الخاص بك
+    omniauth_callbacks:
+      failure: 'تعذر تسجيل دخولك عبر %{kind} بسبب "%{reason}".'
+      success: تم تسجيل الدخول بنجاح عبر حساب %{kind}.
     passwords:
       no_token: لا يمكنك الوصول إلى هذه الصفحة إلا من رابط إعادة تعيين كلمة المرور.
+      reset_instructions_sent: تم إرسال تعليمات إعادة تعيين كلمة المرور.
+      reset_password:
+        email_placeholder: you@email.com
+        forgot_password: أرسل لي رابط تسجيل الدخول
+        forgot_password_description: أدخل البريد الإلكتروني المرتبط بحسابك، وسنرسل لك رابطًا لمرة واحدة أو رابط إعادة تعيين كلمة المرور.
+        go_back: رجوع
+        send_reset_link_button: إرسال رابط إعادة تعيين كلمة المرور
       send_instructions: ستصلك تعليمات إعادة تعيين كلمة المرور خلال دقائق.
       send_paranoid_instructions: إذا كان بريدك موجودًا لدينا، ستصلك تعليمات إعادة التعيين خلال دقائق.
       updated: تم تغيير كلمة المرور بنجاح. تم تسجيل دخولك.
       updated_not_active: تم تغيير كلمة المرور بنجاح.
     registrations:
+      agreement:
+        sign_in_html: "بتسجيل الدخول، فإنك توافق على <a href=\"%{privacy_path}\">سياسة الخصوصية</a> و<a href=\"%{terms_path}\">شروط الاستخدام</a> و<a href=\"%{code_of_conduct_path}\">قواعد السلوك</a>."
+        sign_up_html: "بإنشاء حساب، فإنك توافق على <a href=\"%{privacy_path}\">سياسة الخصوصية</a> و<a href=\"%{terms_path}\">شروط الاستخدام</a> و<a href=\"%{code_of_conduct_path}\">قواعد السلوك</a>."
+      already_have_an_account_html: "لديك حساب بالفعل؟ <a href=\"%{sign_up_path}\">سجّل الدخول</a>."
+      create_account_html: "جديد في %{community_name}؟ <a href=\"%{sign_up_path}\">أنشئ حسابًا</a>."
       destroyed: تم إلغاء حسابك بنجاح.
+      errors:
+        bummer: نعتذر عن ذلك...
+        mobile_app_no_new_account_html: "لا ندعم إنشاء حسابات جديدة حاليًا عبر تطبيق الجوال. إذا أردت إنشاء حساب للانضمام إلى %{community_name}، يرجى استخدام الويب عبر <a href=\"%{path}\">%{path}</a>"
+      invite_only_disclaimer_html: "هذا المجتمع يعمل بالدعوات فقط، لذلك لا يمكنك الانضمام دون دعوة. إذا أردت طلب دعوة، يرجى التواصل مع مدير المجتمع عبر %{contact_link}"
+      or: أو
       signed_up: مرحبًا! تم إنشاء حسابك بنجاح.
       signed_up_but_inactive: تم إنشاء حسابك، لكنه غير مفعل بعد.
       signed_up_but_locked: تم إنشاء حسابك، لكنه مقفل.
       signed_up_but_unconfirmed: تم إرسال رابط تأكيد إلى بريدك الإلكتروني.
+      title:
+        invite_only_commuty: "%{community_name} مجتمع بالدعوات فقط."
+        join_community: "انضم إلى %{community_name}"
+        welcome_back_community: "مرحبًا بعودتك إلى %{community_name}"
       update_needs_confirmation: تم تحديث حسابك، لكن يجب تأكيد البريد الإلكتروني الجديد.
       updated: تم تحديث حسابك بنجاح.
       updated_but_not_signed_in: تم تحديث حسابك بنجاح. سجل الدخول مرة أخرى.
@@ -49,6 +76,10 @@ ar:
       send_instructions: ستصلك تعليمات فتح الحساب خلال دقائق.
       send_paranoid_instructions: إذا كان حسابك موجودًا، ستصلك تعليمات فتحه خلال دقائق.
       unlocked: تم فتح حسابك بنجاح.
+    passwordless:
+      magic_link_sent: تم إرسال رابط تسجيل الدخول إلى بريدك الإلكتروني. اتبع الرابط لتسجيل الدخول إلى حسابك.
+      magic_link_sent_paranoid: إذا كان حسابك موجودًا، فستصلك رسالة تتضمن رابط تسجيل الدخول. اتبع الرابط لتسجيل الدخول إلى حسابك.
+      not_found_in_database: لم نتمكن من العثور على مستخدم بهذا البريد الإلكتروني
   errors:
     messages:
       already_confirmed: تم تأكيده مسبقًا، حاول تسجيل الدخول.
@@ -59,4 +90,3 @@ ar:
       not_saved:
         one: "منع خطأ واحد حفظ %{resource}:"
         other: "منعت %{count} أخطاء حفظ %{resource}:"
-

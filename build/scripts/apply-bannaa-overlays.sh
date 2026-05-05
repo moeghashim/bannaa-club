@@ -88,6 +88,77 @@ if File.exist?(admin_locale_form)
     File.write(admin_locale_form, text)
   end
 end
+
+confirmations_new = File.join(root, "app/views/devise/confirmations/new.html.erb")
+if File.exist?(confirmations_new)
+  replace_once(
+    confirmations_new,
+    '<% title "Confirm your email" %>',
+    '<% title t("views.auth.confirm_email.title") %>'
+  )
+  replace_once(
+    confirmations_new,
+    'inline_svg_tag("mail.svg", aria: true, title: "Email", class: "mb-6")',
+    'inline_svg_tag("mail.svg", aria: true, title: t("views.auth.confirm_email.icon"), class: "mb-6")'
+  )
+  replace_once(
+    confirmations_new,
+    '<h1 class="fs-2xl m:fs-3xl lh-tight fw-bold mb-4">Great! Now confirm your email address.</h1>',
+    '<h1 class="fs-2xl m:fs-3xl lh-tight fw-bold mb-4"><%= t("views.auth.confirm_email.heading") %></h1>'
+  )
+  replace_once(
+    confirmations_new,
+    <<-'ERB'.chomp,
+      <p class="fs-l m:fs-xl color-base-70 m:max-w-50">
+        We've sent an email to <span class="fw-bold"><%= proper_email %></span>.
+        Click the button inside to confirm your email.</p>
+      </p>
+    ERB
+    <<-'ERB'.chomp
+      <p class="fs-l m:fs-xl color-base-70 m:max-w-50">
+        <%= t("views.auth.confirm_email.sent_html", email: tag.span(proper_email, class: "fw-bold")) %>
+      </p>
+    ERB
+  )
+  replace_once(
+    confirmations_new,
+    '<button class="color-accent-brand text-underline cursor-pointer js-confirmation-button border-none p-0" role="button">Click here</button> if you didn\'t get the email...',
+    '<button class="color-accent-brand text-underline cursor-pointer js-confirmation-button border-none p-0" role="button"><%= t("views.auth.confirm_email.resend_button") %></button> <%= t("views.auth.confirm_email.resend_suffix") %>'
+  )
+  replace_once(
+    confirmations_new,
+    'inline_svg_tag("forem-background.svg", aria: true, title: "forem background", class: "forem-background absolute bottom-0 right-0 hidden m:block")',
+    'inline_svg_tag("forem-background.svg", aria: true, title: t("views.auth.background"), class: "forem-background absolute bottom-0 right-0 hidden m:block")'
+  )
+  replace_once(
+    confirmations_new,
+    '<div>Re-enter the email address below to resend the confirmation link</div>',
+    '<div><%= t("views.auth.confirm_email.modal") %></div>'
+  )
+  replace_once(
+    confirmations_new,
+    'aria: { label: "Confirmation email address" }',
+    'aria: { label: t("views.auth.confirm_email.field_aria_label") }'
+  )
+  replace_once(
+    confirmations_new,
+    'f.submit "Resend", role: "button", class: "crayons-btn mr-1"',
+    'f.submit t("views.auth.confirm_email.resend"), role: "button", class: "crayons-btn mr-1"'
+  )
+  replace_once(
+    confirmations_new,
+    <<-'ERB'.chomp,
+        <button class="crayons-btn color-base-70 crayons-btn--ghost js-dismiss-button" role="button">
+          Dismiss
+        </button>
+    ERB
+    <<-'ERB'.chomp
+        <button class="crayons-btn color-base-70 crayons-btn--ghost js-dismiss-button" role="button">
+          <%= t("views.auth.confirm_email.dismiss") %>
+        </button>
+    ERB
+  )
+end
 RUBY
 
 echo "Applied Bannaa overlays to $FOREM_DIR"
