@@ -59,22 +59,18 @@ replace_once(
 )
 
 layout_text = File.read(layout)
-unless layout_text.include?('bannaa_light')
+bannaa_stylesheets = %(      <%= stylesheet_link_tag "bannaa_light", media: "all" %>\n      <%= stylesheet_link_tag "bannaa_rtl", media: "all" if rtl_locale? %>)
+layout_text = layout_text.gsub(/\n\s*<%= stylesheet_link_tag "bannaa_light", media: "all" %>\n\s*<%= stylesheet_link_tag "bannaa_rtl", media: "all" if rtl_locale\? %>/, "")
+body_styles_end = %(      </style>\n      </div>\n      <% if user_signed_in? %>)
+if layout_text.include?(body_styles_end)
+  layout_text = layout_text.sub(body_styles_end, %(      </style>\n      </div>\n#{bannaa_stylesheets}\n      <% if user_signed_in? %>))
+else
   layout_text = layout_text.sub(
-    '<%= render "layouts/styles", qualifier: "main" %>',
-    %(<%= render "layouts/styles", qualifier: "main" %>\n      <%= stylesheet_link_tag "bannaa_light", media: "all" %>)
+    '<%= render "layouts/styles", qualifier: "secondary" %>',
+    %(<%= render "layouts/styles", qualifier: "secondary" %>\n#{bannaa_stylesheets})
   )
-  File.write(layout, layout_text)
 end
-
-layout_text = File.read(layout)
-unless layout_text.include?('bannaa_rtl')
-  layout_text = layout_text.sub(
-    '<%= stylesheet_link_tag "bannaa_light", media: "all" %>',
-    %(<%= stylesheet_link_tag "bannaa_light", media: "all" %>\n      <%= stylesheet_link_tag "bannaa_rtl", media: "all" if rtl_locale? %>)
-  )
-  File.write(layout, layout_text)
-end
+File.write(layout, layout_text)
 
 manifest = File.join(root, "app/assets/config/manifest.js")
 manifest_text = File.read(manifest)
@@ -91,7 +87,7 @@ File.write(manifest, manifest_text)
 
 assets_initializer = File.join(root, "config/initializers/assets.rb")
 assets_text = File.read(assets_initializer)
-bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-8"'
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-9"'
 unless assets_text.include?(bannaa_asset_version)
   assets_text = assets_text.sub(
     /^Rails\.application\.config\.assets\.version = .+$/,
