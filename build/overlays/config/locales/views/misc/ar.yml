@@ -1,0 +1,17 @@
+---
+ar:
+  views:
+    auth:
+      create:
+        text: إنشاء حساب
+        aria_label: إنشاء حساب جديد
+      login:
+        text: تسجيل الدخول
+        aria_label: تسجيل الدخول
+    hamburger:
+      icon: قائمة التنقل
+      icon_close: إغلاق
+      icon_left: القائمة اليسرى
+      icon_right: القائمة اليمنى
+    sticky:
+      no_summary: منشورات في هذا الوسم

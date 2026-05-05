@@ -1,0 +1,53 @@
+---
+ar:
+  views:
+    stories:
+      meta:
+        description_tagged: "محتوى %{tag} على %{name}"
+        page: " صفحة %{page}"
+        rss: "خلاصة RSS لـ %{name}"
+      status_placeholder: "ماذا يدور في بالك؟"
+      status_expanded_placeholder: "هل تريد إضافة شيء؟"
+      submit: نشر
+      status_hint_html: "<strong>المنشورات السريعة</strong> تظهر في الخلاصة، لكنها لا تظهر في الإشعارات أو ملفك الشخصي - <a href='/new'>افتح المحرر الكامل</a>"
+      heading: المنشورات
+      discuss: "#نقاش"
+      follow: متابعة
+      menu:
+        aria_left: زر التنقل لليسار
+        aria_right: زر التنقل لليمين
+      sort:
+        aria_label: عرض المنشورات حسب
+        aria_tagged: عرض المنشورات الموسومة حسب
+        relevant: الأهم
+        week: الأسبوع
+        month: الشهر
+        year: السنة
+        infinity: كل الوقت
+        latest: الأحدث
+        latest_less_filtered: الأحدث بدون تصفية مكثفة
+        signin_html: "👋 <a href=\"%{path}\">سجل الدخول</a> لفرز المنشورات حسب <strong>الأهم</strong> أو <strong>الأحدث</strong> أو <strong>الأعلى</strong>."
+        top: الأعلى
+      feed:
+        discover: استكشاف
+        following: المتابَعون
+        top_this_week: الأعلى هذا الأسبوع
+        top_this_month: الأعلى هذا الشهر
+        top_this_year: الأعلى هذا العام
+        top_this_infinity: الأعلى على الإطلاق
+        no_results:
+          discover:
+            title: لا توجد منشورات
+            description: عد لاحقًا أو أنشئ منشورك الأول.
+            action_text: إنشاء منشور
+            action_href: "/new"
+          following:
+            title: لا توجد منشورات من أشخاص تتابعهم
+            description: تابع بعض الأعضاء لرؤية أحدث منشوراتهم في خلاصتك.
+            action_text: العودة إلى الاستكشاف
+            action_href: "/discover"
+          default:
+            title: لا توجد منشورات
+            description: عد لاحقًا أو أنشئ منشورك الأول.
+            action_text: إنشاء منشور
+            action_href: "/new"

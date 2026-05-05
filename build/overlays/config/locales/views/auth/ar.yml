@@ -1,0 +1,80 @@
+---
+ar:
+  views:
+    auth:
+      background: خلفية Forem
+      create:
+        aria_label: إنشاء حساب جديد
+        text: إنشاء حساب
+      creator:
+        text1: لنبدأ رحلتك مع Forem.
+        text2: أنشئ حساب المدير أولًا.
+        text3: بعد ذلك سنرشدك لإعداد مجتمعك.
+        hint:
+          aria_label: تعديل اسم المستخدم
+          icon: تعديل اسم المستخدم
+          text_html: "%{start}سيكون اسم المستخدم الخاص بك %{end}%{button}"
+        submit: إنشاء حسابي
+      already_have_an_account: لديك حساب بالفعل؟
+      sign_in: تسجيل الدخول
+      login:
+        aria_label: تسجيل الدخول
+        text: تسجيل الدخول
+        forgot: هل نسيت كلمة المرور؟
+      provider:
+        text: "%{action} عبر %{provider}"
+        login: متابعة
+        signup: التسجيل
+        email:
+          icon: البريد الإلكتروني
+          text: التسجيل بالبريد الإلكتروني
+      register:
+        errors:
+          one: وجدنا مشكلة واحدة
+          other: وجدنا %{count} مشكلات
+        allow:
+          one_html: التسجيل محصور ببريد <strong>@%{domain}</strong>.
+          list: التسجيل محصور بعناوين البريد التالية
+        create: أنشئ حسابك
+        field:
+          name:
+            aria_label: الاسم
+            label: الاسم
+          username:
+            aria_label: اسم المستخدم
+            desc: يمكن أن يحتوي اسم المستخدم على أحرف وأرقام وشرطات سفلية فقط، وبحد أقصى 30 حرفًا.
+            label: اسم المستخدم
+          email:
+            aria_label: البريد الإلكتروني
+            label: البريد الإلكتروني
+            placeholder: john@example.com
+          password:
+            aria_label: كلمة المرور
+            desc: 8 أحرف على الأقل
+            label: كلمة المرور
+            placeholder: "••••••••"
+            hide: إخفاء كلمة المرور
+            show: إظهار كلمة المرور
+          confirm:
+            aria_label: تأكيد كلمة المرور
+            label: تأكيد كلمة المرور
+          required: "* - مطلوب"
+        secret:
+          label: سر Forem الجديد
+          placeholder: كما زودك به مستضيف Forem
+          hide: إخفاء سر Forem الجديد
+          show: إظهار سر Forem الجديد
+        submit: التسجيل
+      wizard:
+        meta:
+          title: لنبدأ مع Forem
+        heading: لنبدأ رحلتك مع Forem
+        step_1: أنشئ حسابًا. سيكون أول حساب مدير عام.
+        step_2_html: بعد التسجيل أدناه، يمكنك إعداد مجتمعك من %{path}.
+        step_3: توجد إمكانات كثيرة للمدير، وقد تحتاج بعض الوقت للتعرف عليها.
+        step_4: تواصل مع فريق Forem إذا لم تكن متأكدًا من أي شيء.
+        step_5: "لتمكين المجتمع 🌱"
+      tagline: مساحة يتشارك فيها الأعضاء المعرفة ويتابعون الجديد وينمون مهاراتهم.
+      title:
+        text_html: "%{name} مجتمع يضم %{maybe_size}%{label} رائعين"
+        size: "%{num} "

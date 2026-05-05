@@ -1,0 +1,78 @@
+---
+ar:
+  views:
+    main:
+      aria_home: "الرئيسية - %{community}"
+      header:
+        create_account: إنشاء حساب
+        login: تسجيل الدخول
+        nav:
+          aria_label: قائمة التنقل
+        moderation:
+          aria_label: الإشراف
+          icon: الإشراف
+        manage:
+          aria_label: إدارة المجتمع الفرعي
+          icon: إدارة المجتمع الفرعي
+        notifications:
+          aria_label: الإشعارات
+          icon: الإشعارات
+        skip: الانتقال إلى المحتوى
+      modal:
+        create_account:
+          aria_label: إنشاء حساب جديد
+          text: إنشاء حساب
+        login:
+          aria_label: تسجيل الدخول
+          text: تسجيل الدخول
+      nav:
+        admin: الإدارة
+        manage_subforem: إدارة المجتمع الفرعي
+        agent_sessions: جلسات الوكيل
+        dashboard: لوحة التحكم
+        placeholder: "..."
+        list: قائمة القراءة
+        moderator_center: مركز الإشراف
+        other: أخرى
+        settings: الإعدادات
+        account: الحساب
+      nav_name:
+        About: عن المنصة
+        Code of Conduct: قواعد السلوك
+        Contact: تواصل معنا
+        FAQ: الأسئلة الشائعة
+        Home: الرئيسية
+        Listings: الإعلانات
+        Podcasts: البودكاست
+        Privacy Policy: سياسة الخصوصية
+        Reading List: قائمة القراءة
+        Tags: الوسوم
+        Terms of use: شروط الاستخدام
+        Videos: الفيديوهات
+      side:
+        active_discussions: النقاشات النشطة
+        listings:
+          heading: الإعلانات
+          all: عرض الكل
+          new: إنشاء إعلان
+        trend: أدلة وموارد رائجة
+        recent: استفسارات حديثة
+      tags:
+        aria_label: تخصيص أولوية الوسوم
+        follow: متابعة
+        my_tags: وسومي
+        popular_tags: الوسوم الشائعة
+      footer:
+        built:
+          text_html: مبني على %{forem}، برنامج %{opensource} الذي يشغل %{dev} ومجتمعات شاملة أخرى.
+          forem: Forem
+          opensource: مفتوح المصدر
+          dev: DEV
+        desc_html: "%{community} - %{desc}"
+        logo: شعار Forem
+        powered:
+          text_html: صُنع بمحبة وباستخدام %{rails}. %{community} <span title="copyright">&copy;</span> %{copyright}.
+          rails: Ruby on Rails
+        sidebar_desc_html: "%{community}\n%{desc}"
+      create_post: إنشاء منشور
+      signout: تسجيل الخروج

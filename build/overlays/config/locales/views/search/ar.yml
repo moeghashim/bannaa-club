@@ -1,0 +1,32 @@
+---
+ar:
+  views:
+    search:
+      heading: "نتائج البحث%{for}"
+      for: " عن %{query}"
+      placeholder: بحث...
+      find_related_posts: ابحث عن منشورات ذات صلة...
+      icon:
+        aria_label: بحث
+        title: بحث
+      powered_by: مدعوم بواسطة Algolia
+      suggestions:
+        submit_search: إرسال البحث للتصفية المتقدمة.
+        displaying_recommendations: عرض توصيات Algolia - ابدأ الكتابة للبحث
+      nav:
+        posts: المنشورات
+        podcasts: البودكاست
+        people: الأشخاص
+        comments: التعليقات
+        my_posts: منشوراتي فقط
+        organizations: المنظمات
+        tags: الوسوم
+      sort:
+        aria_label: خيارات ترتيب نتائج البحث
+        relevance: الأكثر صلة
+        newest: الأحدث
+        oldest: الأقدم
+      meta:
+        title: "نتائج البحث%{for}"
+        for: " عن %{query}"
+        description: "%{site} => نتائج البحث"

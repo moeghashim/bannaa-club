@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 22:36:13 CDT
+Last updated: 2026-05-05 06:52:11 CDT
 
 ## Project Goal
 
@@ -256,6 +256,52 @@ DNS record added by user:
 
 ```text
 A club 31.97.6.123
+```
+
+## 2026-05-05 06:52:11 CDT - Arabic UI Locale Overlay
+
+Files changed:
+
+```text
+build/overlays/config/locales/views/auth/ar.yml
+build/overlays/config/locales/views/main/ar.yml
+build/overlays/config/locales/views/misc/ar.yml
+build/overlays/config/locales/views/search/ar.yml
+build/overlays/config/locales/views/stories/ar.yml
+progress.md
+```
+
+Change:
+
+- Added Arabic locale overlays for the public Forem UI surfaces that were still rendering English while RTL was already active.
+- Covered header actions, mobile/navigation labels, auth/register/login labels, homepage/feed headings and sort tabs, search labels, footer copy, and common close/menu strings.
+- Kept the change update-safe by adding overlay locale files only; no live container patching and no broad upstream template fork.
+
+Remote commands run:
+
+```text
+none
+```
+
+Verification result:
+
+```text
+ruby YAML parser loaded all local overlay locale files.
+build/scripts/apply-bannaa-overlays.sh applied successfully to a fresh upstream Forem checkout at /tmp/forem-ar-locale-check.
+ruby YAML parser loaded all locale files in the overlaid Forem checkout.
+```
+
+Deployment state:
+
+```text
+Local overlay prepared; not deployed yet in this entry.
+```
+
+Remaining blockers:
+
+```text
+Need commit, push, GitHub Actions image build, VPS image pull/recreate, and live HTML verification.
+Full Arabic coverage for deeper admin/settings/editor pages remains incremental; current change targets visible public UI strings first.
 ```
 
 Verified:
