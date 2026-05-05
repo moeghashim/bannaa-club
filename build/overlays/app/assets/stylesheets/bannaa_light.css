@@ -226,6 +226,13 @@ body::before {
   color: var(--bannaa-text);
 }
 
+.crayons-navigation--horizontal {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .crayons-card:hover,
 .crayons-story:hover,
 .sidebar-navigation-links a:hover,

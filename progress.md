@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 18:53:34 CDT
+Last updated: 2026-05-05 18:59:15 CDT
 
 ## Project Goal
 
@@ -2412,6 +2412,52 @@ Remaining blockers:
 
 ```text
 The requested light version is verified live.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 18:59:15 CDT Update
+
+Started a follow-up cleanup to remove the gray background/frame behind the home feed tag/tab row.
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+None yet for this pass.
+```
+
+Deployment state:
+
+```text
+Local overlay changes only so far.
+```
+
+Verification result:
+
+```text
+Live HTML confirmed the row is ul.crayons-navigation.crayons-navigation--horizontal.
+Added a specific .crayons-navigation--horizontal override that sets border: 0, border-radius: 0, background: transparent, and box-shadow: none.
+Individual .crayons-navigation__item pills remain styled separately.
+Bumped Rails asset version to 1.1-bannaa-20260505-15.
+
+Validation passed:
+- bash -n build/scripts/apply-bannaa-overlays.sh.
+- embedded Ruby from build/scripts/apply-bannaa-overlays.sh passed ruby -c.
+- fresh upstream Forem overlay check confirmed .crayons-navigation--horizontal override and asset version 1.1-bannaa-20260505-15.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the horizontal navigation background cleanup, wait for a successful image build, deploy to the VPS, then verify live computed styles.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
