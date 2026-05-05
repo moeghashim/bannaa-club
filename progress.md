@@ -1183,3 +1183,118 @@ CSS asset check: /assets/bannaa_rtl-...css -> HTTP 200
 ```
 
 Note: the live page loads the light theme and RTL assets. Visual QA in a browser is still recommended for final polish across desktop/mobile because this was verified through HTML/CSS asset checks and HTTP responses, not a rendered screenshot review.
+
+## 2026-05-05 09:52:42 CDT Update
+
+Translated the public authentication confirmation and sign-in flows requested for:
+
+```text
+https://club.bannaa.ai/confirm-email
+https://club.bannaa.ai/users/sign_in
+```
+
+Files changed:
+
+```text
+build/scripts/apply-bannaa-overlays.sh
+build/overlays/config/locales/devise.ar.yml
+build/overlays/config/locales/views/auth/ar.yml
+build/overlays/config/locales/helpers/ar.yml
+progress.md
+```
+
+Implementation notes:
+
+- Kept the change in the overlay system so future upstream Forem updates still apply first.
+- Added Arabic locale keys for the confirm-email page rather than editing live templates directly.
+- Added Arabic Devise registration/sign-in agreement strings used by `/users/sign_in`.
+- Added Arabic Rails form label fallbacks for `user.email`, `user.password`, `user.password_confirmation`, and `user.remember_me`.
+- Patched `app/views/devise/confirmations/new.html.erb` through `build/scripts/apply-bannaa-overlays.sh` so hardcoded English strings are rendered via translation keys.
+
+Local validation:
+
+```text
+bash -n build/scripts/apply-bannaa-overlays.sh
+ruby YAML parse for build/overlays/config/locales/**/*.yml
+Fresh Forem clone: build/scripts/apply-bannaa-overlays.sh /tmp/forem-auth-translation-check
+ruby YAML parse for /tmp/forem-auth-translation-check/config/locales/**/*.yml
+rg check: requested English confirm/sign-in strings no longer appear in patched auth templates/locales
+```
+
+GitHub Actions image build:
+
+```text
+Commit: b28e66f Translate auth confirmation pages
+Run ID: 25383245346
+Result: success
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+VPS deployment:
+
+```text
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+```
+
+Deployment state:
+
+```text
+forem-postgres-1 running
+forem-redis-1 running
+forem-web-1 running ghcr.io/moeghashim/bannaa-club:production
+forem-worker-1 running ghcr.io/moeghashim/bannaa-club:production
+Existing Traefik configuration was not changed.
+```
+
+Live verification:
+
+```text
+https://club.bannaa.ai/confirm-email -> HTTP 200
+https://club.bannaa.ai/users/sign_in -> HTTP 200
+https://club.bannaa.ai/confirm-email?email=test%40example.com -> Arabic sent-email sentence renders with the email address
+```
+
+Confirmed Arabic strings on `/confirm-email`:
+
+```text
+تأكيد بريدك الإلكتروني
+رائع! أكّد عنوان بريدك الإلكتروني الآن.
+أرسلنا رسالة إلى test@example.com. اضغط الزر داخل الرسالة لتأكيد بريدك الإلكتروني.
+اضغط هنا
+إذا لم تصلك الرسالة...
+أعد إدخال البريد الإلكتروني أدناه لإرسال رابط التأكيد مرة أخرى
+إعادة الإرسال
+إغلاق
+```
+
+Confirmed Arabic strings on `/users/sign_in`:
+
+```text
+مرحبًا بعودتك إلى Bannaa
+البريد الإلكتروني
+كلمة المرور
+تذكرني
+هل نسيت كلمة المرور؟
+تسجيل الدخول
+سياسة الخصوصية
+شروط الاستخدام
+قواعد السلوك
+أنشئ حسابًا
+```
+
+Remaining visible Latin fragments after this pass are brand/technical names, not untranslated auth copy:
+
+```text
+Bannaa
+DEV
+Forem
+Ruby on Rails
+```
+
+Remaining blockers:
+
+```text
+None for the requested confirm-email and sign-in translation pass.
+```
