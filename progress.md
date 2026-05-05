@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 10:08:34 CDT
+Last updated: 2026-05-05 10:23:25 CDT
 
 ## Project Goal
 
@@ -1367,5 +1367,67 @@ Remaining blockers:
 
 ```text
 Users who loaded the page during the bad asset state may need a hard refresh until the rebuilt image with the bumped asset version is deployed.
+The onboarding Preact copy is still upstream English and should be translated in a follow-up overlay pass.
+```
+
+## 2026-05-05 10:23:25 CDT Update
+
+Completed the cache-busting image rebuild and deployed it to the VPS.
+
+Files changed:
+
+```text
+progress.md
+```
+
+GitHub Actions image build:
+
+```text
+Commit: 177a605 Fix Forem static asset serving
+Run ID: 25384817975
+Result: success
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+Remote commands run:
+
+```text
+cd /docker/forem
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+Created one temporary confirmed debug user for logged-in onboarding verification, then deleted all bannaa-onboarding-debug-* users.
+```
+
+Deployment state:
+
+```text
+forem-postgres-1 Up
+forem-redis-1 Up
+forem-web-1 Up ghcr.io/moeghashim/bannaa-club:production
+forem-worker-1 Up ghcr.io/moeghashim/bannaa-club:production
+RAILS_SERVE_STATIC_FILES=true is present in the running web container
+Rails.application.config.assets.version = "1.1-bannaa-20260505" is present in the running image
+Existing Traefik/OpenClaw stack was not changed.
+```
+
+Verification result:
+
+```text
+https://club.bannaa.ai/ -> HTTP 200
+Live HTML now references /assets/base-649290b8707f4ef03974108a8c4625d7baf90badfd3b266612884402b45e5de2.js
+Old broken /assets/base-2bacbe8dfc080954166fffeed29d0d2b987bc0a147671dd6b82118493429c5fa.js is absent from live HTML
+Logged-in browser automation reached https://club.bannaa.ai/onboarding?referrer=none
+Onboarding profile form count: 1
+Onboarding profile form visible: true
+body[data-user]: present
+meta[name="csrf-token"]: present
+Temporary verification users were deleted after the check
+```
+
+Remaining blockers:
+
+```text
+The blank onboarding page is fixed.
 The onboarding Preact copy is still upstream English and should be translated in a follow-up overlay pass.
 ```
