@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 18:42:58 CDT
+Last updated: 2026-05-05 18:53:34 CDT
 
 ## Project Goal
 
@@ -2350,6 +2350,68 @@ Remaining blockers:
 
 ```text
 Commit and push the light-default theme change, wait for a successful image build, deploy to the VPS, then verify live home/article light colors and top-area colors.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 18:53:34 CDT Update
+
+Deployed and verified the light-default Bannaa theme.
+
+Files changed:
+
+```text
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25408463197 --repo moeghashim/bannaa-club --exit-status
+ssh -i ~/.ssh/forem_hostinger_bsocial root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+curl -k -s -o /tmp/bannaa-light-home.html -w '%{http_code}' https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/
+curl -fsSL https://club.bannaa.ai/bannaa_qa_1778001192/khtbr-rhl-bannaa-1778001243-1674
+Headless Chrome DevTools Protocol checks at 1536x900 for home and article pages.
+```
+
+Deployment state:
+
+```text
+Commit 3f8ee4a built successfully in GitHub Actions run 25408463197 and was deployed to the VPS.
+forem-web-1 and forem-worker-1 were recreated with ghcr.io/moeghashim/bannaa-club:production.
+forem-postgres-1 and forem-redis-1 remained running.
+Homepage returned HTTP 200 after Rails booted.
+Live home/article pages served bannaa_light asset hash 8c62b148ade2bffb5847ae374b3d19f839f2dc4a3a950edd767b992d24ca67ae.
+```
+
+Verification result:
+
+```text
+Home page at 1536x900:
+- html has no data-theme attribute and computes color-scheme: light.
+- body background: rgb(255, 255, 255); text: rgb(14, 14, 12).
+- header background: rgb(255, 255, 255).
+- card/surface background: rgb(246, 246, 244); border: rgb(230, 228, 220).
+- primary CTA background/border: rgb(255, 106, 61); text: rgb(255, 255, 255).
+- tag prefix accents: rgb(255, 106, 61).
+- blue computed-style matches: none.
+- visible horizontal overflow: none.
+
+Article page at 1536x900:
+- html has no data-theme attribute and computes color-scheme: light.
+- body background: rgb(255, 255, 255); text: rgb(14, 14, 12).
+- header background: rgb(255, 255, 255).
+- article/card surface background: rgb(246, 246, 244); border: rgb(230, 228, 220).
+- primary CTA background/border: rgb(255, 106, 61); text: rgb(255, 255, 255).
+- blue computed-style matches: none.
+- visible horizontal overflow: none.
+```
+
+Remaining blockers:
+
+```text
+The requested light version is verified live.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
