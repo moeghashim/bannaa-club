@@ -125,6 +125,7 @@ html[data-theme="light"] {
   --cta-branded-border: var(--bannaa-accent);
   --cta-branded-border-hover: var(--bannaa-accent-hover);
   --focus: var(--bannaa-accent);
+  --focus-ring: 0 0 0 2px var(--bannaa-bg), 0 0 0 4px var(--bannaa-accent);
   --divider: var(--bannaa-line);
   --shadow-1: none;
   --shadow-2: none;
@@ -162,6 +163,23 @@ body::before {
   border-block-end: 1px solid var(--bannaa-line);
   background: var(--bannaa-header-bg);
   box-shadow: none;
+}
+
+.crayons-header .site-logo {
+  max-width: 160px;
+  color: var(--bannaa-text);
+  font-family: var(--bannaa-display-font);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.crayons-header .site-logo:hover,
+.crayons-header .site-logo:focus,
+.crayons-header .site-logo:focus-visible {
+  color: var(--bannaa-accent);
+  box-shadow: var(--focus-ring);
 }
 
 .crayons-header__container,
@@ -282,6 +300,33 @@ select {
   color: var(--bannaa-accent-ink) !important;
   box-shadow: 0 0 0 4px var(--bannaa-accent-glow);
   filter: none;
+}
+
+.crayons-header .c-cta--branded,
+.crayons-header .c-cta--branded:visited,
+.crayons-header .crayons-btn--brand,
+.crayons-header .crayons-btn--primary {
+  border-color: var(--bannaa-accent) !important;
+  background: var(--bannaa-accent) !important;
+  color: var(--bannaa-accent-ink) !important;
+}
+
+.crayons-header .c-cta--branded:hover,
+.crayons-header .c-cta--branded:focus,
+.crayons-header .c-cta--branded:focus-visible,
+.crayons-header .c-cta--branded:active,
+.crayons-header .crayons-btn--brand:hover,
+.crayons-header .crayons-btn--brand:focus,
+.crayons-header .crayons-btn--brand:focus-visible,
+.crayons-header .crayons-btn--brand:active,
+.crayons-header .crayons-btn--primary:hover,
+.crayons-header .crayons-btn--primary:focus,
+.crayons-header .crayons-btn--primary:focus-visible,
+.crayons-header .crayons-btn--primary:active {
+  border-color: var(--bannaa-accent-hover) !important;
+  background: var(--bannaa-accent-hover) !important;
+  color: var(--bannaa-accent-ink) !important;
+  box-shadow: var(--focus-ring);
 }
 
 .crayons-btn--outlined {

@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 18:01:41 CDT
+Last updated: 2026-05-05 18:05:01 CDT
 
 ## Project Goal
 
@@ -2199,6 +2199,51 @@ Remaining blockers:
 
 ```text
 The reported blue UI/button issue and navigation overflow issue are verified fixed on the live site.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 18:05:01 CDT Update
+
+Started follow-up header branding changes after the top area was reported as still showing blue and the logo needed Arabic text.
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/overlays/app/views/layouts/_logo.html.erb
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+None yet for this pass.
+```
+
+Deployment state:
+
+```text
+Local overlay changes only so far.
+```
+
+Verification result:
+
+```text
+Added an overlay for app/views/layouts/_logo.html.erb so the visual site logo renders بنّاء instead of the English community name.
+Added explicit header logo typography and header CTA visited/focus/focus-visible/active rules so top-bar primary controls keep Bannaa accent colors.
+Added --focus-ring using Bannaa colors and bumped Rails asset version to 1.1-bannaa-20260505-13.
+Validation passed:
+- bash -n build/scripts/apply-bannaa-overlays.sh.
+- embedded Ruby from build/scripts/apply-bannaa-overlays.sh passed ruby -c.
+- fresh upstream Forem overlay check confirmed the Arabic logo partial, focus rules, and asset version 1.1-bannaa-20260505-13.
+```
+
+Remaining blockers:
+
+```text
+Commit and push the header/logo overlay, wait for a successful image build, deploy to the VPS, then verify live header logo text and top-bar colors.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
