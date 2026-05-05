@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 22:21:19 CDT
+Last updated: 2026-05-04 22:36:13 CDT
 
 ## Project Goal
 
@@ -812,3 +812,47 @@ styles OK
 ```
 
 Next step: commit and push, wait for GitHub Actions image build, deploy the rebuilt image to the VPS, and verify `https://club.bannaa.ai/` still renders `lang="ar" dir="rtl"` with `bannaa_light` and `bannaa_rtl` assets.
+
+## 2026-05-04 22:36:13 CDT Update
+
+The Bannaa light theme overlay was committed and pushed:
+
+```text
+532ba3f Add Bannaa light theme overlay
+```
+
+GitHub Actions image build:
+
+```text
+Run ID: 25356069155
+Result: success
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+VPS deployment:
+
+```text
+docker pull ghcr.io/moeghashim/bannaa-club:production
+docker compose --env-file /opt/forem/config/forem.env up -d --force-recreate web worker
+```
+
+The first `docker pull` attempt failed due to a transient GHCR network reset. Retrying the same pull succeeded.
+
+New live image digest:
+
+```text
+sha256:9d4ca9fba091a292b77f7170dab6d11d4c4f5ab5bebde426267673da495588ed
+```
+
+Verification:
+
+```text
+https://club.bannaa.ai/?_light_theme_check=2 -> HTTP 200
+Rendered HTML: <html lang="ar" dir="rtl">
+Loaded CSS: bannaa_light-2d41ca2423db7979b05ddacacbcf12866f3eab384895416eeccfbdd31f66456b.css
+Loaded CSS: bannaa_rtl-5acb4e8e7963032dc8baf3576f83f9b330456e7c83d8d80ece5e9d4de5823a4e.css
+CSS asset check: /assets/bannaa_light-...css -> HTTP 200
+CSS asset check: /assets/bannaa_rtl-...css -> HTTP 200
+```
+
+Note: the live page loads the light theme and RTL assets. Visual QA in a browser is still recommended for final polish across desktop/mobile because this was verified through HTML/CSS asset checks and HTTP responses, not a rendered screenshot review.
