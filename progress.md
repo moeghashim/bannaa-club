@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 07:39:20 CDT
+Last updated: 2026-05-05 07:45:11 CDT
 
 ## Project Goal
 
@@ -484,6 +484,58 @@ Remaining blockers:
 User needs to fill deploy/secrets/admin-user.env with ADMIN_EMAIL, ADMIN_USERNAME, ADMIN_NAME, and ADMIN_PASSWORD.
 After that, create the first Forem creator/super_admin user on the VPS and verify login/admin access.
 The FOREM_OWNER_SECRET is only required while Forem has no first owner/admin user; normal users should not need it after setup is complete.
+```
+
+## 2026-05-05 07:45:11 CDT - First Admin Created
+
+Files changed:
+
+```text
+progress.md
+```
+
+Local ignored file used:
+
+```text
+deploy/secrets/admin-user.env
+```
+
+Remote commands run:
+
+```text
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml exec -T web bundle exec rails runner "<first admin creation script>"
+chown -R 1000:1000 /opt/forem/uploads
+mkdir -p /opt/forem/uploads/tmp
+chown -R 1000:1000 /opt/forem/uploads/tmp
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml exec -T web sh -lc "ls -ld /opt/apps/forem/public/uploads /opt/apps/forem/public/uploads/tmp && touch /opt/apps/forem/public/uploads/tmp/.write-test && rm /opt/apps/forem/public/uploads/tmp/.write-test"
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml exec -T web bundle exec rails runner "Users::CreateMascotAccount.call; <verification>"
+```
+
+Deployment state:
+
+```text
+No image deployment change.
+First admin user exists with creator, super_admin, and trusted roles.
+Settings::General.waiting_on_first_user is false.
+Mascot account was created successfully.
+Uploads volume ownership was corrected from root:root to UID/GID 1000:1000 for the Forem container user.
+```
+
+Verification result:
+
+```text
+User count after setup: 2 (first admin plus Forem mascot account).
+First admin id: 1.
+First admin roles: creator, super_admin, trusted.
+/enter?state=new-user no longer includes the FOREM_OWNER_SECRET field.
+/opt/apps/forem/public/uploads/tmp is writable from inside the Forem web container.
+```
+
+Remaining blockers:
+
+```text
+User should log in with the credentials stored locally in deploy/secrets/admin-user.env.
+Root password/API key rotation is still recommended from earlier setup notes.
 ```
 
 Verified:
