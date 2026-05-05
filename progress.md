@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 11:47:22 CDT
+Last updated: 2026-05-05 12:45:52 CDT
 
 ## Project Goal
 
@@ -1507,4 +1507,97 @@ Onboarding text is now translated.
 The article editor toolbar and article/comment interaction controls still contain English strings such as Edit, Preview, Bold, Submit, Add to the discussion, reaction labels, and moderation controls.
 Full Arabic coverage remains for deeper authenticated areas, admin/settings pages, editor internals, comment form labels, email templates, policy/static pages, and mobile acceptance QA.
 Actual email-confirmation receipt was not re-tested with a real inbox during this pass.
+```
+
+## 2026-05-05 12:45:52 CDT Update
+
+Completed the immediate follow-up for remaining English editor/comment/article controls and re-tested live SMTP delivery acceptance.
+
+Files changed:
+
+```text
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Implementation notes:
+
+- Kept the work in the overlay patch script so future upstream Forem updates can still be reapplied through the image build.
+- Translated the hydrated article author action links injected by `initializeBaseUserData.js`: `Edit`, `Manage`, `Stats`, plus comment `Settings` and trusted-user `Moderate`.
+- Translated the Preact comment subscription control: visible subscribe/unsubscribe text, settings label, radio options, descriptions, preferences icon title, and done button.
+- Changed reaction drawer and engagement labels to resolve through `views.reactions.category.*` instead of raw English `ReactionCategory` names, with the upstream name retained as a fallback.
+- Translated the comment edit page title.
+- Bumped the Rails asset version to `1.1-bannaa-20260505-4`.
+
+Local validation:
+
+```text
+bash -n build/scripts/apply-bannaa-overlays.sh
+ruby -e 'require "psych"; Dir["build/overlays/config/locales/**/*.yml"].each { |f| Psych.load_file(f) }'
+Fresh Forem clone: build/scripts/apply-bannaa-overlays.sh /tmp/forem-editor-controls-ar-check
+rg check for old targeted English labels in patched article/comment/subscription/reaction files
+```
+
+GitHub Actions image build:
+
+```text
+Commit: fe03a78 Translate editor article controls
+Run ID: 25390541716
+Result: success
+
+Commit: ff51540 Translate remaining editor controls
+Run ID: 25391338757
+Result: success
+
+Commit: 6543127 Translate article action controls
+Run ID: 25392119606
+Result: success in 7m47s
+Published image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+VPS deployment:
+
+```text
+cd /docker/forem
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+```
+
+Deployment state:
+
+```text
+forem-postgres-1 remained running.
+forem-redis-1 remained running.
+forem-web-1 recreated with ghcr.io/moeghashim/bannaa-club:production.
+forem-worker-1 recreated with ghcr.io/moeghashim/bannaa-club:production.
+Existing Traefik/OpenClaw stack was not changed.
+Rails asset version: 1.1-bannaa-20260505-4.
+Homepage returned HTTP 200 after Rails booted.
+```
+
+Live verification:
+
+```text
+Authenticated browser smoke passed on /new:
+إنشاء منشور, تحرير, معاينة, رفع صورة الغلاف, رابط فيديو الغلاف, الوسوم, toolbar controls, نشر, حفظ كمسودة, خيارات متقدمة.
+
+Authenticated browser smoke passed on a temporary QA article:
+Author action links rendered as تحرير, إدارة, الإحصاءات.
+Comment subscription rendered as اشتراك.
+Comment textarea placeholder/aria rendered as أضف إلى النقاش / أضف تعليقًا إلى النقاش.
+Comment buttons rendered as إرسال, معاينة, إغلاق.
+Article side controls included إضافة تفاعل and الانتقال إلى التعليقات.
+
+Rails/SMTP sent a real ActionMailer test through Resend to the admin email stored in deploy/secrets/admin-user.env and returned "smtp accepted".
+Physical inbox receipt cannot be verified from Codex; user should check inbox/spam for subject: Bannaa Forem email receipt test 2026-05-05.
+```
+
+Remaining blockers:
+
+```text
+User should confirm whether the Resend SMTP test arrived in the real inbox/spam folder.
+Temporary bannaa_qa_* browser QA artifacts from this pass are still present so the currently open test article remains inspectable; clean them up after user acceptance.
+Full Arabic coverage remains for deeper authenticated/admin/settings surfaces, email templates, policy/static pages, and mobile acceptance QA.
+Rotate the Resend API key/root password noted earlier because secrets were pasted during setup.
 ```
