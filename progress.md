@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 22:15:26 CDT
+Last updated: 2026-05-04 22:17:09 CDT
 
 ## Project Goal
 
@@ -730,3 +730,34 @@ Remaining work from the original plan:
 7. Add automated Postgres backups and a restore drill.
 8. Add basic uptime/log monitoring.
 9. Consider upgrading Hostinger KVM1 before real traffic.
+
+## 2026-05-04 22:17:09 CDT Update
+
+User provided Bannaa design reference:
+
+```text
+https://github.com/moeghashim/bannaa/blob/main/DESIGN.md
+```
+
+Added a compact local implementation reference:
+
+```text
+design/BANNAA_DESIGN_REFERENCE.md
+```
+
+Updated agent instructions:
+
+```text
+AGENTS.md
+```
+
+Future Forem UI, CSS, brand, layout, Arabic RTL, or theme work should read `design/BANNAA_DESIGN_REFERENCE.md` before editing. The design direction is terminal brutalism: Arabic-first, dense, flat, high-contrast, sharp 2px-radius surfaces, one accent per theme, IBM Plex Sans Arabic for Arabic/body text, JetBrains Mono only for technical metadata, and CSS logical properties for RTL mirroring.
+
+Deployment state unchanged:
+
+```text
+https://club.bannaa.ai/ -> HTTP 200
+Live image: ghcr.io/moeghashim/bannaa-club:production
+```
+
+Remaining design-specific work: implement a Forem brand-theme overlay using the Bannaa design tokens. The current live deployment has Arabic/RTL support, but not the full terminal-brutalist visual theme yet.

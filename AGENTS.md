@@ -4,9 +4,12 @@ Before making changes in this workspace, read:
 
 ```text
 progress.md
+design/BANNAA_DESIGN_REFERENCE.md
 ```
 
 Use `progress.md` as the source of truth for the current Forem Hostinger deployment state, decisions, remote paths, secrets handling, temporary workarounds, and remaining work.
+
+Use `design/BANNAA_DESIGN_REFERENCE.md` as the local summary of Bannaa's visual system before making any Forem UI, CSS, brand, layout, Arabic RTL, or theme changes.
 
 After any meaningful change, append or update `progress.md` with:
 
@@ -30,4 +33,3 @@ The live VPS deployment currently uses:
 /docker/forem/docker-compose.yml
 /opt/forem/config/forem.env
 ```
-
