@@ -26,6 +26,16 @@ def replace_once(path, before, after)
   File.write(path, text.sub(before, after))
 end
 
+def replace_many(path, replacements)
+  text = File.read(path)
+  replacements.each do |before, after|
+    raise "Pattern not found in #{path}: #{before.inspect}" unless text.include?(before)
+
+    text = text.gsub(before, after)
+  end
+  File.write(path, text)
+end
+
 app_controller = File.join(root, "app/controllers/application_controller.rb")
 replace_once(
   app_controller,
@@ -89,6 +99,128 @@ unless assets_text.include?(bannaa_asset_version)
   )
   File.write(assets_initializer, assets_text)
 end
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/Navigation.jsx"),
+  {
+    "return 'Finish';" => "return 'إنهاء';",
+    "return 'Skip for now';" => "return 'تخطي الآن';",
+    "return 'Continue';" => "return 'متابعة';",
+    'aria-label="Back to previous onboarding step"' => 'aria-label="الرجوع إلى خطوة الإعداد السابقة"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/ProfileForm.jsx"),
+  {
+    "let errorMessage = 'Unable to continue, please try again.'" => "let errorMessage = 'تعذر المتابعة، حاول مرة أخرى.'",
+    "An error occurred: {errorMessage}" => "حدث خطأ: {errorMessage}",
+    "Build your profile" => "أكمل ملفك الشخصي",
+    "Tell us a little bit about yourself — this is how others\n                will see you on {communityConfig.communityName}. You’ll\n                always be able to edit this later in your Settings." => "أخبرنا قليلًا عن نفسك — هكذا سيراك الآخرون في {communityConfig.communityName}.\n                يمكنك تعديل ذلك لاحقًا من الإعدادات.",
+    "label: 'Name'," => "label: 'الاسم',",
+    "placeholder_text: 'Your full name'," => "placeholder_text: 'اسمك الكامل',",
+    "label: 'Username'," => "label: 'اسم المستخدم',",
+    "placeholder_text: 'johndoe'," => "placeholder_text: 'mohammad',",
+    "label: 'Bio'," => "label: 'نبذة',",
+    "placeholder_text:\n                    'Tell us a little about yourself'," => "placeholder_text:\n                    'اكتب نبذة قصيرة عن نفسك',",
+    "Remaining characters:{' '}" => "الأحرف المتبقية:{' '}",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/ProfileForm/ProfileImage.jsx"),
+  {
+    "Edit profile image" => "تعديل صورة الملف الشخصي",
+    'alt="profile"' => 'alt="الصورة الشخصية"',
+    "<Spinner /> Uploading..." => "<Spinner /> جارٍ الرفع...",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/FollowTags.jsx"),
+  {
+    "followingStatus = `${selectedTags.length} tag selected`;" => "followingStatus = `تم اختيار وسم واحد`;",
+    "followingStatus = `${selectedTags.length} tags selected`;" => "followingStatus = `تم اختيار ${selectedTags.length} وسوم`;",
+    "Tags improve your feed. Please leave reactions to further improve your feed. To get started, a \"like\" reaction has been added to the post <strong>{article.title}</strong>. Feel free to undo it later." => "الوسوم تحسن خلاصتك. اترك تفاعلاتك لتحسينها أكثر. للبدء، أضفنا إعجابًا إلى منشور <strong>{article.title}</strong>. يمكنك التراجع عنه لاحقًا.",
+    "What are you interested in?" => "ما الذي يهمك؟",
+    "Follow tags to customize your feed" => "تابع الوسوم لتخصيص خلاصتك",
+    "aria-label={`Follow ${tag.name}`}" => "aria-label={`تابع ${tag.name}`}",
+    "? '1 post'\n                            : `${tag.taggings_count} posts`" => "? 'منشور واحد'\n                            : `${tag.taggings_count} منشورات`",
+    "Get a Periodic Digest of Top Posts" => "احصل على ملخص دوري لأفضل المنشورات",
+    "We'll email you with a curated selection of top posts based on\n                  the tags you follow." => "سنرسل لك بريدًا بملخص مختار من أفضل المنشورات بناءً على\n                  الوسوم التي تتابعها.",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/FollowUsers.jsx"),
+  {
+    "followText = `Select ${follows.length}`;" => "followText = `اختيار ${follows.length}`;",
+    "followText = `Select all ${follows.length}`;" => "followText = `اختيار الكل ${follows.length}`;",
+    "followText = 'Deselect all';" => "followText = 'إلغاء اختيار الكل';",
+    "Suggested follows" => "حسابات مقترحة",
+    "Kickstart your community" => "ابدأ بناء مجتمعك",
+    "aria-label={`Follow ${follow.name}`}" => "aria-label={`تابع ${follow.name}`}",
+    "{selected ? 'Following' : 'Follow'}" => "{selected ? 'تتابع' : 'تابع'}",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/FollowSubforems.jsx"),
+  {
+    "throw new Error('Failed to fetch subforems');" => "throw new Error('تعذر جلب المجتمعات الفرعية');",
+    "console.error('Error fetching subforems:', error);" => "console.error('تعذر جلب المجتمعات الفرعية:', error);",
+    "console.error('Error following subforems:', error);" => "console.error('تعذر متابعة المجتمعات الفرعية:', error);",
+    "Follow subforems to customize your network" => "تابع المجتمعات لتخصيص شبكتك",
+    "Following {count} {count === 1 ? 'subforem' : 'subforems'}" => "{count === 1 ? 'تتابع مجتمعًا واحدًا' : `تتابع ${count} مجتمعات`}",
+    "What communities interest you?" => "ما المجتمعات التي تهمك؟",
+    "The subforem you joined from is highlighted below. You can follow additional communities to customize your feed." => "المجتمع الذي انضممت منه مميز أدناه. يمكنك متابعة مجتمعات إضافية لتخصيص خلاصتك.",
+    "aria-label={`Follow ${subforem.name}`}" => "aria-label={`تابع ${subforem.name}`}",
+    "alt={`${subforem.name} logo`}" => "alt={`شعار ${subforem.name}`}",
+    "subforem.description || 'Join this community to connect with like-minded people.'" => "subforem.description || 'انضم إلى هذا المجتمع للتواصل مع أشخاص يشاركونك الاهتمامات.'",
+    'nextText="Continue"' => 'nextText="متابعة"',
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/EmailPreferencesForm.jsx"),
+  {
+    "content: '<p>Loading...</p>'," => "content: '<p>جارٍ التحميل...</p>',",
+    "👋 One last check" => "مراجعة أخيرة",
+    "We Recommend Subscribing to Emails" => "ننصح بتفعيل رسائل البريد",
+    "Newsletters are a part of keeping up with the pulse of the overall DEV ecosystem.\n            <span style='display:inline-block'>It's easy to unsubscribe later if it's not for you.</span>" => "النشرات البريدية تساعدك على متابعة أهم ما يحدث في مجتمع Bannaa.\n            <span style='display:inline-block'>يمكنك إلغاء الاشتراك لاحقًا بسهولة إذا لم تكن مناسبة لك.</span>",
+    "No thank you" => "لا شكرًا",
+    "Count me in" => "أريد الاشتراك",
+  },
+)
+
+replace_many(
+  File.join(root, "app/javascript/onboarding/components/CustomCta.jsx"),
+  {
+    "console.error('Error submitting custom actions:', error);" => "console.error('تعذر إرسال خيارات المبادرات:', error);",
+    "Special Initiatives" => "مبادرات خاصة",
+    "DEV offers exclusive events that help you grow as a developer and certify your skills. Follow these special tags to make sure you never miss an update." => "تقدم Bannaa مبادرات وفعاليات تساعدك على تنمية مهاراتك ومتابعة الفرص المهمة. تابع هذه الوسوم حتى لا يفوتك أي تحديث.",
+    "Follow DEV Challenges" => "تابع تحديات Bannaa",
+    "We offer special coding challenges, hackathons and writing challenges to help you sharpen your skills and win prizes." => "نقدم تحديات كتابة وبرمجة وفعاليات تساعدك على صقل مهاراتك والمنافسة.",
+    "Follow DEV Education Tracks" => "تابع مسارات Bannaa التعليمية",
+    "Get curated educational content and tutorials on a variety of development topics." => "احصل على محتوى تعليمي مختار وشروحات في موضوعات تطوير متنوعة.",
+    "Follow the Google AI Org Account" => "تابع حساب Google AI",
+    "We have partnered with Google AI on custom education tracks for upgrading your skills in AI and machine learning." => "نتعاون مع Google AI على مسارات تعليمية تساعدك على تطوير مهاراتك في الذكاء الاصطناعي وتعلم الآلة.",
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/onboardings/_newsletter.html.erb"),
+  {
+    "<h1>Almost there!</h1>" => "<h1>أوشكت على الانتهاء!</h1>",
+    "<p>Review your email preferences before we continue.</p>" => "<p>راجع تفضيلات البريد الإلكتروني قبل المتابعة.</p>",
+    '<p class="mt-1 pb-4">I want to receive weekly newsletter emails</p>' => '<p class="mt-1 pb-4">أريد تلقي رسائل النشرة الأسبوعية</p>',
+    "Almost there!" => "أوشكت على الانتهاء!",
+    "Review your email preferences before we continue." => "راجع تفضيلات البريد الإلكتروني قبل المتابعة.",
+    "<legend>Email preferences</legend>" => "<legend>تفضيلات البريد الإلكتروني</legend>",
+    'I want to receive weekly newsletter emails.' => 'أريد تلقي رسائل النشرة الأسبوعية.',
+    'I want to receive a periodic digest of top posts from my tags.' => 'أريد تلقي ملخص دوري بأفضل المنشورات من الوسوم التي أتابعها.',
+  },
+)
 
 admin_locale_form = File.join(root, "app/views/admin/settings/forms/_user_experience.html.erb")
 if File.exist?(admin_locale_form)
