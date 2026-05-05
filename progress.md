@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 16:48:44 CDT
+Last updated: 2026-05-05 16:53:02 CDT
 
 ## Project Goal
 
@@ -1680,6 +1680,49 @@ Remaining blockers:
 This pass covers server-side PostgreSQL article search. If Algolia is enabled later for production search, Arabic normalization/synonyms must also be configured there.
 Comment/user/tag search still use their existing upstream matching and may need separate Arabic normalization if users report the same issue outside article search.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-05 16:53:02 CDT Update
+
+Fixed the first brand-theme image build failure.
+
+Files changed:
+
+```text
+build/overlays/app/assets/stylesheets/bannaa_light.css
+build/scripts/apply-bannaa-overlays.sh
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25404233027 --repo moeghashim/bannaa-club --exit-status
+gh run view 25404233027 --repo moeghashim/bannaa-club --job 74511254303 --log
+```
+
+Deployment state:
+
+```text
+GitHub Actions run 25404233027 failed during Docker image build before publishing a new production image.
+The live VPS was not changed.
+```
+
+Verification result:
+
+```text
+Build failure cause: SassC rejected CSS min(var(--site-width), calc(...)) during assets:precompile.
+Replaced CSS min() usage with Sass-safe width plus max-width rules.
+No remaining min() usage in bannaa_light.css.
+bash -n build/scripts/apply-bannaa-overlays.sh
+awk '<extract embedded Ruby from apply-bannaa-overlays.sh>' | ruby -c
+node '<check bannaa_light.css brace balance>'
+```
+
+Remaining blockers:
+
+```text
+Commit and push the Sass-safe CSS fix, wait for a successful image build, deploy it to the VPS, and visually verify the reported RTL overflow and blue button issues.
 ```
 
 ## 2026-05-05 16:44:44 CDT Update

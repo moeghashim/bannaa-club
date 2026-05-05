@@ -167,7 +167,8 @@ body::before {
 .crayons-header__container,
 .crayons-layout {
   box-sizing: border-box;
-  max-width: min(var(--site-width), calc(100vw - 48px));
+  width: var(--site-width);
+  max-width: calc(100vw - 48px);
 }
 
 .crayons-layout {
@@ -451,7 +452,8 @@ html[dir="rtl"] .reaction-drawer__outer {
 html[dir="rtl"] .reaction-drawer {
   inset-inline-end: auto;
   inset-inline-start: 100%;
-  max-width: min(260px, calc(100vw - 96px));
+  width: 260px;
+  max-width: calc(100vw - 96px);
 }
 
 html[dir="rtl"] .crayons-reaction,
