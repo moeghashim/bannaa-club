@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-04 21:17:02 CDT
+Last updated: 2026-05-04 21:31:34 CDT
 
 ## Project Goal
 
@@ -488,3 +488,69 @@ ruby -c app/helpers/application_helper.rb
 ```
 
 Next step: push this workflow and run GitHub Actions to build/publish `ghcr.io/moeghashim/bannaa-club:production`.
+
+## 2026-05-04 21:31:34 CDT Update
+
+The first GitHub Actions custom image build failed during Forem asset precompile.
+
+Failed workflow:
+
+```text
+Build Forem Image
+Run ID: 25354553467
+Commit: 59fc984
+Result: failure
+```
+
+Root cause:
+
+```text
+Sprockets::FileNotFound: couldn't find file 'homePage.js'
+```
+
+The overlay script had appended direct manifest links for:
+
+```text
+homePage.js
+homePageFeed.js
+homePageFeedShortcuts.js
+```
+
+Forem's upstream manifest already contains:
+
+```text
+//= link_tree ../builds
+```
+
+and the Docker build generates those files under `app/assets/builds`. The direct Sprockets links were removed from the overlay. The overlay now adds only:
+
+```text
+//= link bannaa_rtl.css
+```
+
+Files changed:
+
+```text
+build/scripts/apply-bannaa-overlays.sh
+build/README.md
+progress.md
+```
+
+Validation performed against a fresh upstream Forem checkout at `/tmp/forem-overlay-test-buildfix`:
+
+```text
+build/scripts/apply-bannaa-overlays.sh /tmp/forem-overlay-test-buildfix
+YAML parse for config/locales/**/*.yml
+ruby -c app/helpers/application_helper.rb
+manifest check for problematic JS links
+```
+
+Result:
+
+```text
+YAML OK
+Syntax OK
+Only bannaa_rtl.css is directly added to app/assets/config/manifest.js
+```
+
+Next step: commit and push the build-fix patch, then watch the next GitHub Actions image build.

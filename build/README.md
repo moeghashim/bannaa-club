@@ -24,6 +24,5 @@ Current overlay scope:
 - Arabic locale allowlist in `ApplicationController`.
 - Dynamic `<html lang>` and `dir`.
 - RTL helper and RTL stylesheet.
-- Asset manifest links needed by the production image.
+- RTL stylesheet asset manifest link.
 - Admin default-locale selector support for Arabic.
-
