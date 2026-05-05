@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 07:07:13 CDT
+Last updated: 2026-05-05 07:18:18 CDT
 
 ## Project Goal
 
@@ -391,6 +391,53 @@ Remaining blockers:
 
 ```text
 Need commit, push, GitHub Actions image build, VPS image pull/recreate, and live font verification.
+```
+
+## 2026-05-05 07:18:18 CDT - Arabic Font Correction Deployed
+
+Files changed:
+
+```text
+progress.md
+```
+
+Related code commit:
+
+```text
+927556b Enforce Bannaa Arabic font in RTL UI
+```
+
+Remote commands run:
+
+```text
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker
+cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps
+```
+
+Deployment state:
+
+```text
+GitHub Actions Build Forem Image run 25375409828 completed successfully in 8m47s.
+VPS pulled ghcr.io/moeghashim/bannaa-club:production and recreated forem-web-1 and forem-worker-1.
+forem-postgres-1 and forem-redis-1 remained running.
+```
+
+Verification result:
+
+```text
+https://club.bannaa.ai/ returned HTTP 200 after Rails boot completed.
+Live HTML renders <html lang="ar" dir="rtl">.
+Live page now links /assets/bannaa_rtl-f69c4c25aeb61a896cb1c276167accd979f13dbbcf5e4c2f4e046cad6afe66bc.css.
+The live RTL CSS contains the Arabic font-family overrides for body, buttons, inputs, cards, layout, headings, and story/article titles.
+```
+
+Remaining blockers:
+
+```text
+Visual review in a real browser is still useful because font rendering depends on the client loading Google Fonts successfully.
+If the desired Arabic font is not IBM Plex Sans Arabic, update design/BANNAA_DESIGN_REFERENCE.md first and then change the overlay token.
+Root password/API key rotation is still recommended from earlier setup notes.
 ```
 
 Verified:
