@@ -37,5 +37,23 @@ module Bannaa
 
       "#{normalized_document} LIKE :bannaa_arabic_search_pattern"
     end
+
+    def comment_match_sql
+      normalized_document = sql_normalize("comments.body_markdown")
+
+      "#{normalized_document} LIKE :bannaa_arabic_search_pattern"
+    end
+
+    def tag_match_sql
+      normalized_document = sql_normalize("tags.name")
+
+      "#{normalized_document} LIKE :bannaa_arabic_search_pattern"
+    end
+
+    def user_match_sql
+      normalized_document = sql_normalize("concat_ws(' ', users.name, users.username)")
+
+      "#{normalized_document} LIKE :bannaa_arabic_search_pattern"
+    end
   end
 end

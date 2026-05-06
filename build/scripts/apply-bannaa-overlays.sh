@@ -87,7 +87,7 @@ File.write(manifest, manifest_text)
 
 assets_initializer = File.join(root, "config/initializers/assets.rb")
 assets_text = File.read(assets_initializer)
-bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260505-15"'
+bannaa_asset_version = 'Rails.application.config.assets.version = "1.1-bannaa-20260506-1"'
 unless assets_text.include?(bannaa_asset_version)
   assets_text = assets_text.sub(
     /^Rails\.application\.config\.assets\.version = .+$/,
@@ -130,6 +130,149 @@ replace_once(
         "#{table_name}.id IN (#{pg_search_relation.unscope(:select).select("#{table_name}.id").to_sql}) OR #{Bannaa::ArabicSearch.article_match_sql}",
         bannaa_arabic_search_pattern: pattern,
       )
+    else
+      pg_search_relation
+    end
+  }
+  RUBY
+)
+
+replace_once(
+  File.join(root, "app/models/comment.rb"),
+  <<-'RUBY'.chomp,
+  pg_search_scope :search_comments,
+                  against: %i[body_markdown],
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      highlight: {
+                        StartSel: "<mark>",
+                        StopSel: "</mark>",
+                        MaxFragments: 2
+                      }
+                    }
+                  }
+  RUBY
+  <<-'RUBY'.chomp,
+  pg_search_scope :bannaa_pg_search_comments,
+                  against: %i[body_markdown],
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      highlight: {
+                        StartSel: "<mark>",
+                        StopSel: "</mark>",
+                        MaxFragments: 2
+                      }
+                    }
+                  }
+
+  scope :search_comments, lambda { |term|
+    pg_search_relation = bannaa_pg_search_comments(term)
+    normalized_term = Bannaa::ArabicSearch.normalize(term)
+
+    if Bannaa::ArabicSearch.arabic?(term) && normalized_term.present?
+      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_term)}%"
+      where(
+        "#{table_name}.id IN (#{pg_search_relation.unscope(:select).select("#{table_name}.id").to_sql}) OR #{Bannaa::ArabicSearch.comment_match_sql}",
+        bannaa_arabic_search_pattern: pattern,
+      )
+    else
+      pg_search_relation.with_pg_search_highlight
+    end
+  }
+  RUBY
+)
+
+replace_once(
+  File.join(root, "app/models/tag.rb"),
+  <<-'RUBY'.chomp,
+  pg_search_scope :search_by_name,
+                  against: :name,
+                  using: { tsearch: { prefix: true } }
+  RUBY
+  <<-'RUBY'.chomp,
+  pg_search_scope :bannaa_pg_search_by_name,
+                  against: :name,
+                  using: { tsearch: { prefix: true } }
+
+  scope :search_by_name, lambda { |term|
+    pg_search_relation = bannaa_pg_search_by_name(term)
+    normalized_term = Bannaa::ArabicSearch.normalize(term)
+
+    if Bannaa::ArabicSearch.arabic?(term) && normalized_term.present?
+      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_term)}%"
+      where(
+        "#{table_name}.id IN (#{pg_search_relation.unscope(:select).select("#{table_name}.id").to_sql}) OR #{Bannaa::ArabicSearch.tag_match_sql}",
+        bannaa_arabic_search_pattern: pattern,
+      )
+    else
+      pg_search_relation
+    end
+  }
+  RUBY
+)
+
+replace_once(
+  File.join(root, "app/services/search/comment.rb"),
+  "      relation = relation.search_comments(term).with_pg_search_highlight if term.present?",
+  "      relation = relation.search_comments(term) if term.present?",
+)
+
+replace_once(
+  File.join(root, "app/models/user.rb"),
+  <<-'RUBY'.chomp,
+  scope :search_by_name_and_username, lambda { |term|
+    term = term&.delete("\\") # prevents syntax error in tsquery
+    return none if term.blank?
+
+    where(
+      sanitize_sql_array(
+        [
+          "to_tsvector('simple', coalesce(name::text, '')) @@ to_tsquery('simple', ? || ':*')",
+          connection.quote(term),
+        ],
+      ),
+    ).or(
+      where(
+        sanitize_sql_array(
+          [
+            "to_tsvector('simple', coalesce(username::text, '')) @@ to_tsquery('simple', ? || ':*')",
+            connection.quote(term),
+          ],
+        ),
+      ),
+    )
+  }
+  RUBY
+  <<-'RUBY'.chomp,
+  scope :search_by_name_and_username, lambda { |term|
+    term = term&.delete(92.chr) # prevents syntax error in tsquery
+    return none if term.blank?
+
+    pg_search_relation = where(
+      sanitize_sql_array(
+        [
+          "to_tsvector('simple', coalesce(name::text, '')) @@ to_tsquery('simple', ? || ':*')",
+          connection.quote(term),
+        ],
+      ),
+    ).or(
+      where(
+        sanitize_sql_array(
+          [
+            "to_tsvector('simple', coalesce(username::text, '')) @@ to_tsquery('simple', ? || ':*')",
+            connection.quote(term),
+          ],
+        ),
+      ),
+    )
+
+    normalized_term = Bannaa::ArabicSearch.normalize(term)
+
+    if Bannaa::ArabicSearch.arabic?(term) && normalized_term.present?
+      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(normalized_term)}%"
+      pg_search_relation.or(where(Bannaa::ArabicSearch.user_match_sql, bannaa_arabic_search_pattern: pattern))
     else
       pg_search_relation
     end
@@ -642,6 +785,75 @@ replace_many(
   File.join(root, "app/views/comments/edit.html.erb"),
   {
     '<% title "Editing Comment" %>' => '<% title t("views.comments.edit") %>',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/admin/settings/show.html.erb"),
+  {
+    '<h1 class="crayons-title mb-4">Config</h1>' => '<h1 class="crayons-title mb-4">الإعدادات العامة</h1>',
+    'Only users with <strong>Super Admin</strong> privileges may edit this page.' => 'يمكن فقط للمستخدمين بصلاحية <strong>مدير عام</strong> تعديل هذه الصفحة.',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/admin/settings/_update_setting_button.html.erb"),
+  {
+    'f.submit "Update Settings", class: "c-btn c-btn--primary mt-4", aria: { label: local_assigns[:aria_label] }, data: { disable_with: false }' => 'f.submit "تحديث الإعدادات", class: "c-btn c-btn--primary mt-4", aria: { label: local_assigns[:aria_label] }, data: { disable_with: false }',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/admin/settings/forms/_emails.html.erb"),
+  {
+    '<summary class="crayons-subtitle-2 p-6">Emails</summary>' => '<summary class="crayons-subtitle-2 p-6">البريد الإلكتروني</summary>',
+    '<strong>Custom HTML footer for all emails.</strong> This will appear above the sign-in reminder in user emails.' => '<strong>تذييل HTML مخصص لكل الرسائل.</strong> سيظهر أعلى تذكير تسجيل الدخول في رسائل المستخدم.',
+    '<strong>Email-safe HTML guidelines:</strong>' => '<strong>إرشادات HTML المتوافق مع البريد:</strong>',
+    '<li>✅ Use <strong>inline styles only</strong> (e.g., <code>style="color: #333;"</code>)</li>' => '<li>استخدم <strong>أنماط inline فقط</strong> مثل <code>style="color: #333;"</code></li>',
+    '<li>✅ Allowed tags: p, br, a, strong, em, span, div, table, tr, td, h1-h6, ul, ol, li, img</li>' => '<li>الوسوم المسموحة: p, br, a, strong, em, span, div, table, tr, td, h1-h6, ul, ol, li, img</li>',
+    '<li>❌ No external CSS (<code>&lt;link&gt;</code> or <code>&lt;style&gt;</code> tags)</li>' => '<li>لا تستخدم CSS خارجيًا مثل <code>&lt;link&gt;</code> أو <code>&lt;style&gt;</code></li>',
+    '<li>❌ No JavaScript or event handlers</li>' => '<li>لا تستخدم JavaScript أو معالجات أحداث</li>',
+    '<li>💡 Keep it simple for best email client compatibility</li>' => '<li>اجعله بسيطًا لأفضل توافق مع عملاء البريد</li>',
+    "placeholder: '<p style=\"text-align: center; color: #666;\">Custom footer text here</p>'" => "placeholder: '<p style=\"text-align: center; color: #666;\">نص التذييل المخصص هنا</p>'",
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/admin/settings/forms/_smtp.html.erb"),
+  {
+    '<summary class="crayons-subtitle-2 p-6">Email Server Settings (SMTP)</summary>' => '<summary class="crayons-subtitle-2 p-6">إعدادات خادم البريد (SMTP)</summary>',
+    'Use my own email server' => 'استخدام خادم البريد الخاص بي',
+    'As a Forem Cloud client, we provide an email server managed by the Forem team. All settings are managed by us and the from and reply email addresses are set as <%= ForemInstance.email %>. However, you can override this to use your own email server.' => 'كمستخدم Forem Cloud، نوفر خادم بريد تديره Forem. تتم إدارة الإعدادات تلقائيًا وتستخدم عناوين الإرسال والرد <%= ForemInstance.email %>. يمكنك تجاوز ذلك لاستخدام خادمك الخاص.',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/devise/mailer/confirmation_instructions.html.erb"),
+  {
+    '<p>Welcome<%= " #{@name}" unless @name.include?("http") %>!</p>' => '<p>مرحبًا<%= " #{@name}" unless @name.include?("http") %>!</p>',
+    '<p>You can confirm your account email through the link below:</p>' => '<p>يمكنك تأكيد بريد حسابك من الرابط أدناه:</p>',
+    '<p><%= link_to "Confirm my account", confirmation_url(@resource, confirmation_token: @token, host: @subforem_domain) %></p>' => '<p><%= link_to "تأكيد حسابي", confirmation_url(@resource, confirmation_token: @token, host: @subforem_domain) %></p>',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/devise/mailer/reset_password_instructions.html.erb"),
+  {
+    '<p>Hello <%= @resource.email %>!</p>' => '<p>مرحبًا <%= @resource.email %>!</p>',
+    '<p>Someone has requested a link to change your password. You can do this through the link below.</p>' => '<p>تم طلب رابط لتغيير كلمة مرورك. يمكنك إتمام ذلك من الرابط أدناه.</p>',
+    '<p><%= link_to "Change my password", edit_password_url(@resource, reset_password_token: @token) %></p>' => '<p><%= link_to "تغيير كلمة المرور", edit_password_url(@resource, reset_password_token: @token) %></p>',
+    "<p>If you didn't request this, please ignore this email.</p>" => '<p>إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة.</p>',
+    "<p>Your password won't change until you access the link above and create a new one.</p>" => '<p>لن تتغير كلمة مرورك حتى تفتح الرابط أعلاه وتنشئ كلمة جديدة.</p>',
+  },
+)
+
+replace_many(
+  File.join(root, "app/views/devise/mailer/unlock_instructions.html.erb"),
+  {
+    '<p>Hello <%= @resource.email %>!</p>' => '<p>مرحبًا <%= @resource.email %>!</p>',
+    '<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>' => '<p>تم قفل حسابك بسبب عدد كبير من محاولات تسجيل الدخول غير الناجحة.</p>',
+    '<p>Click the link below to unlock your account:</p>' => '<p>اضغط الرابط أدناه لفتح حسابك:</p>',
+    '<p><%= link_to "Unlock my account", unlock_url(@resource, unlock_token: @token) %></p>' => '<p><%= link_to "فتح حسابي", unlock_url(@resource, unlock_token: @token) %></p>',
   },
 )
 

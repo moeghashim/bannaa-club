@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-05 18:59:15 CDT
+Last updated: 2026-05-06 12:42:20 CDT
 
 ## Project Goal
 
@@ -257,6 +257,70 @@ DNS record added by user:
 ```text
 A club 31.97.6.123
 ```
+
+## 2026-05-06 12:42:20 CDT - Arabic Search, Deeper Arabic Coverage, QA Cleanup
+
+Files changed:
+
+```text
+build/README.md
+build/scripts/apply-bannaa-overlays.sh
+build/overlays/config/initializers/bannaa_arabic_search.rb
+build/overlays/config/locales/views/settings/ar.yml
+build/overlays/config/locales/views/users/ar.yml
+build/overlays/app/views/pages/about.ar.html.erb
+build/overlays/app/views/pages/contact.ar.html.erb
+build/overlays/app/views/pages/code_of_conduct.ar.html.erb
+build/overlays/app/views/pages/privacy.ar.html.erb
+build/overlays/app/views/pages/terms.ar.html.erb
+progress.md
+```
+
+Local changes:
+
+- Extended `Bannaa::ArabicSearch` with normalized SQL fallback helpers for comments, tags, and users.
+- Patched the overlay build script so Forem keeps its upstream PostgreSQL full-text scopes as primary search and adds an Arabic normalized fallback for:
+  - article search (existing),
+  - comment body search,
+  - tag search,
+  - user/name search.
+- Bumped the Rails asset version to `1.1-bannaa-20260506-1`.
+- Added Arabic locale coverage for profile/settings and profile/user display strings.
+- Added Arabic first-pass static templates for about, contact, code of conduct, privacy, and terms pages.
+- Added Arabic first-pass strings for selected admin settings surfaces, SMTP/email settings shells, and Devise confirmation/reset/unlock email templates.
+
+Remote commands run:
+
+```text
+ssh root@<host> 'grep relevant non-secret mail env keys from /opt/forem/config/forem.env'
+ssh root@<host> 'docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps --format json'
+ssh root@<host> 'rails runner QA artifact count for bannaa_qa_* / bannaa-qa-*'
+ssh root@<host> 'rails runner destroy temporary bannaa_qa_* / bannaa-qa-* users'
+ssh root@<host> 'rails runner QA artifact recount'
+ssh root@<host> 'rails runner ActionMailer SMTP acceptance test to admin email'
+```
+
+Deployment state:
+
+- Live VPS still runs `ghcr.io/moeghashim/bannaa-club:production` from the previous deployment at the time of this log entry.
+- Temporary QA cleanup completed on the live database:
+  - before cleanup: `users=1`, `articles=1`, `comments=0`,
+  - after cleanup: `users=0`, `articles=0`, `comments=0`.
+- SMTP test was accepted by Forem/ActionMailer using the configured Resend SMTP settings.
+
+Verification result:
+
+- `bash -n build/scripts/apply-bannaa-overlays.sh` passed.
+- `ruby -c build/overlays/config/initializers/bannaa_arabic_search.rb` passed.
+- Added locale YAML files load with Ruby `YAML.load_file`.
+- Overlay script applied successfully to a fresh upstream Forem checkout at `/tmp/forem-bannaa-final-verify`.
+- Syntax checks passed for the patched Ruby model/service files in the fresh checkout.
+
+Remaining blockers:
+
+- Actual inbox/spam receipt for the Resend SMTP test still needs mailbox-side confirmation; from the VPS side we can only confirm SMTP acceptance unless mailbox or Resend event access is shared.
+- New image still needs to be built by GitHub Actions, pushed to GHCR, pulled on the VPS, deployed, and verified on desktop/mobile.
+- Admin/settings and legal/static pages now have a first Arabic pass, but deeper admin forms and legal wording should still be reviewed by a human Arabic/legal owner before treating them as final.
 
 ## 2026-05-05 06:52:11 CDT - Arabic UI Locale Overlay
 

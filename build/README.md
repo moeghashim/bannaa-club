@@ -27,3 +27,5 @@ Current overlay scope:
 - Keeps `app/assets/builds` present before Rails boots during image build.
 - Asset manifest links for the Bannaa stylesheets and Forem home feed bundles.
 - Admin default-locale selector support for Arabic.
+- Arabic search normalization fallback for articles, comments, tags, and users while preserving Forem's upstream full-text search as the primary path.
+- Arabic first-pass coverage for profile/settings locales, core Devise email templates, selected admin settings labels, and core static pages.

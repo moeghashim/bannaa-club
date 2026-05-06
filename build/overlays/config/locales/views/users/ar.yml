@@ -1,0 +1,98 @@
+---
+ar:
+  views:
+    users:
+      meta:
+        og:
+          title: "ملف %{user} في %{community}"
+      comments_locked_cta:
+        title: هل تريد التواصل مع %{user}؟
+        description: أنشئ حسابًا للتواصل مع %{user}. يمكنك أيضًا تسجيل الدخول أدناه إذا كان لديك حساب.
+        create_account: إنشاء حساب
+        already_have_an_account: لديك حساب بالفعل؟
+        sign_in: تسجيل الدخول
+      comments:
+        all:
+          one: كل التعليقات
+          other: كل التعليقات
+        last:
+          one: أحدث التعليقات
+          other: أحدث التعليقات
+        recent: أحدث التعليقات
+        view: عرض كل النشاط
+        view_all:
+          one: عرض كل التعليقات
+          other: عرض كل التعليقات
+        view_last:
+          one: عرض أحدث التعليقات
+          other: عرض أحدث التعليقات
+      github:
+        heading: مستودعات GitHub
+        fork: نسخة فرعية
+        stars:
+          one: نجمة واحدة
+          other: "%{count} نجوم"
+      pin_icon: تثبيت
+      pinned: مثبت
+      profile_fields:
+        bio:
+          label: النبذة
+          placeholder: نبذة قصيرة...
+        display_email_on_profile: عرض البريد في الملف الشخصي
+        location:
+          label: الموقع
+          placeholder: الرياض، السعودية
+        website:
+          label: رابط الموقع
+          placeholder: https://yoursite.com
+        education: التعليم
+        currently learning: أتعلم حاليًا
+        currently hacking on: أعمل حاليًا على
+        available for: متاح لـ
+        skills/languages: المهارات/اللغات
+        work: العمل
+      side:
+        comment:
+          icon: تعليق
+          text:
+            one: تعليق واحد مكتوب
+            other: "%{count} تعليقات مكتوبة"
+        org: المنظمات
+        post:
+          icon: منشور
+          text:
+            one: منشور واحد منشور
+            other: "%{count} منشورات منشورة"
+        tag:
+          icon: وسم
+          text:
+            one: وسم واحد متابع
+            other: "%{count} وسوم متابعة"
+      signout:
+        meta:
+          title: تأكيد تسجيل الخروج - %{community}
+        heading: هل أنت متأكد من تسجيل الخروج؟
+        "yes": نعم، تسجيل الخروج
+      block: حظر @%{user}
+      details: تفاصيل ملف %{user}
+      dropdown: إجراءات المستخدم
+      email_icon: عنوان البريد
+      empty: لا توجد نبذة
+      flag: الإبلاغ عن @%{user}
+      follow: متابعة
+      joined:
+        icon: انضم
+        text_html: "انضم في %{date}"
+      location_icon: الموقع
+      logo: صورة ملف %{user}
+      more: معلومات أكثر عن @%{user}
+      send_pm:
+        code: قواعد السلوك
+        notice_html: يجب أن تلتزم كل التفاعلات الخاصة بـ %{code}.
+        placeholder: اكتب رسالتك هنا...
+        submit: إرسال
+      spam: تعليم @%{user} كرسائل مزعجة
+      social: موقع %{service}
+      unflag: إلغاء الإبلاغ عن @%{user}
+      unspam: إعادة @%{user} إلى وضع جيد
+      website: الموقع الشخصي
