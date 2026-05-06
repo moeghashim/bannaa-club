@@ -2461,3 +2461,52 @@ Commit and push the horizontal navigation background cleanup, wait for a success
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
 ```
+
+## 2026-05-05 19:34:24 CDT Update
+
+Finished deploying and verifying the home feed horizontal tag/tab row background cleanup.
+
+Files changed:
+
+```text
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25408985176 --repo moeghashim/bannaa-club --exit-status
+ssh -i ~/.ssh/forem_hostinger_bsocial -o BatchMode=yes root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+```
+
+Deployment state:
+
+```text
+GitHub Actions build 25408985176 succeeded for commit 5e90897.
+VPS pulled ghcr.io/moeghashim/bannaa-club:production and recreated web and worker.
+docker compose ps showed postgres/redis running and web/worker started.
+Public home page returned HTTP 200 after deployment.
+Live page served bannaa_light asset hash 15559e792b37860acfe9da919328bff2cedc01d4a8cbb0137726ca62952f5660.
+```
+
+Verification result:
+
+```text
+Headless Chrome CDP check at 1920x1200 on https://club.bannaa.ai/ found .crayons-navigation--horizontal with nav text "الأهم الأحدث الأعلى".
+Computed style for .crayons-navigation--horizontal:
+- background-color: rgba(0, 0, 0, 0)
+- border widths: 0px on all sides
+- box-shadow: none
+Computed style for the child .crayons-navigation__item kept the outlined pill treatment:
+- background-color: rgba(0, 0, 0, 0)
+- border: 1px rgb(201, 198, 187)
+Body background remained rgb(255, 255, 255).
+```
+
+Remaining blockers:
+
+```text
+No blocker for the requested gray background removal.
+Unrelated local README.md remains untracked and should be handled separately.
+Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
