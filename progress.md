@@ -2,7 +2,7 @@
 
 This file is the working reference for the Forem on Hostinger Arabic deployment.
 
-Last updated: 2026-05-06 12:42:20 CDT
+Last updated: 2026-05-06 12:58:58 CDT
 
 ## Project Goal
 
@@ -2573,4 +2573,66 @@ Remaining blockers:
 No blocker for the requested gray background removal.
 Unrelated local README.md remains untracked and should be handled separately.
 Temporary bannaa_qa_* browser QA artifacts from earlier passes are still present for inspection.
+```
+
+## 2026-05-06 12:58:58 CDT Update
+
+Deployed and verified the Arabic search/deeper localization update.
+
+Files changed:
+
+```text
+progress.md
+```
+
+Remote commands run:
+
+```text
+gh run watch 25451461310 --repo moeghashim/bannaa-club --exit-status
+ssh -i ~/.ssh/forem_hostinger_bsocial root@31.97.6.123 'cd /docker/forem && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml pull web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml up -d --force-recreate web worker && docker compose --env-file /opt/forem/config/forem.env -f /docker/forem/docker-compose.yml ps'
+curl -k -s -o /tmp/bannaa-home-verify.html -w '%{http_code}' https://club.bannaa.ai/
+curl checks for /about, /contact, /code-of-conduct, /privacy, /terms, and /search/feed_content?search_fields=اختبار
+ssh root@<host> 'rails runner insert temporary search rows inside a transaction, verify Arabic search normalization, and roll back'
+ssh root@<host> 'rails runner clean partial temporary bsearch/bannaa-search QA records from failed validation attempts'
+```
+
+Deployment state:
+
+```text
+GitHub Actions build 25451461310 succeeded for commit 3a9e633 in 8m0s.
+VPS pulled ghcr.io/moeghashim/bannaa-club:production and recreated only Forem web/worker.
+forem-postgres-1 and forem-redis-1 remained running.
+Existing Hostinger Traefik/OpenClaw stack was not changed.
+Homepage returned HTTP 200 after deployment.
+Live page now serves bannaa_light asset hash 4b6c78db9c1cda3a9b94a6881e572cd05ce11f9c3cb851d2da23e5665c4cb886.
+```
+
+Verification result:
+
+```text
+Static/public pages returned HTTP 200:
+- /about title: عن Bannaa
+- /contact title: التواصل - Bannaa
+- /code-of-conduct title: قواعد السلوك - Bannaa
+- /privacy title: سياسة الخصوصية - Bannaa
+- /terms title: شروط الاستخدام - Bannaa
+
+Live Rails transaction-based search verification passed and rolled back all temporary rows:
+- Article.search_articles found the same temp article for اختبار and إختبار.
+- Comment.search_comments found the same temp comment for اختبار and إختبار.
+- Tag.search_by_name found the same temp tag for اختبار and إختبار.
+- User.search_by_name_and_username found the same temp user for اختبار and إختبار.
+
+Earlier temporary QA records matching bannaa_qa_* / bannaa-qa-* were deleted before deployment.
+A later failed validation-based QA attempt left one partial bsearch/bannaa-search user record; it was cleaned with direct table deletes for dependent settings/profile rows.
+SMTP test email was accepted by Forem/ActionMailer via configured Resend SMTP settings.
+```
+
+Remaining blockers:
+
+```text
+Actual Resend inbox/spam receipt is still not independently confirmed; from the VPS side, verification reached SMTP acceptance only.
+Rendered mobile screenshot QA was not completed in this pass; HTTP/page-title checks and server-side Rails checks passed, but a true mobile visual pass should still be done in browser.
+Admin/settings and legal/static pages have first-pass Arabic coverage only; deeper admin forms and legal wording still need human review.
+Unrelated local README.md remains untracked and should be handled separately.
 ```
